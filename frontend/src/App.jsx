@@ -1,9 +1,3 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import UserLogin from "./components/auth/UserLogin"
-import UserRegister from "./components/auth/UserRegister"
-import AuthLayout from "./components/layout/AuthLayout"
-import RootLayout from "./components/layout/RootLayout"
-
 function App() {
   return (
     <BrowserRouter>
