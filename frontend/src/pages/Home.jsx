@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MostVisitedPlaces } from "../components";
 
 const Home = () => {
   return (
@@ -39,8 +40,8 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-green-400 py-10 h-20 w-full ">
-
+      <section className="bg-white  w-full px-20 py-20">
+        <MostVisitedPlaces/>
       </section>
     </>
   );
