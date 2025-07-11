@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Home } from "./pages";
+import { Home, Villages } from "./pages";
 import AuthLayout from "./components/layout/AuthLayout";
 import RootLayout from "./components/layout/RootLayout";
 import Register from "./components/auth/Register";
@@ -16,6 +16,8 @@ function App() {
         </Route>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/village-listing" element={<Villages />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
