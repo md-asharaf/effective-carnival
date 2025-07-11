@@ -1,29 +1,39 @@
-import React from 'react'
-import AuthInput from '../root/AuthInput'
 import { Link } from 'react-router-dom'
-import { useForm } from 'react-hook-form';
-
-function UserRegister() {
+import AuthInput from '../root/AuthInput'
+import { useForm } from 'react-hook-form'
+function Register() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-
     const onSubmit = (data) => {
         console.log(data);
     };
 
-
     return (
-        <div className="flex flex-col items-start justify-center gap-5 rounded-xl border-2 border-gray-900 bg-white/80 shadow-[4px_4px_0_0_rgba(55,65,81,1)] px-8 py-10 w-full max-w-sm">
-            <h1 className="text-2xl font-bold mb-4 text-purple-600 ">Login Your Account</h1>
+        <div className="flex flex-col items-start justify-center gap-5 rounded-xl border-2 border-gray-900 bg-white/80 shadow-[4px_4px_0_0_rgba(55,65,81,1)] px-8 py-10 w-full max-w-sm max-h-[450px]">
+            <h1 className="text-2xl font-bold mb-4 text-purple-600 ">Register Your Account</h1>
 
             <form
-                onSubmit={handleSubmit(onSubmit)} className="w-full"
-            >
+                className='w-full'
+
+                onSubmit={handleSubmit(onSubmit)}>
+                <AuthInput
+                    label="Full name"
+                    type="text"
+                    className="mb-4"
+                    {
+                    ...register("fullName", {
+                        required: "Full name is required",
+                        minLength: {
+                            value: 3,
+                            message: "Full name must be at least 3 characters"
+                        }
+                    })
+                    }
+                />
                 <AuthInput
                     label="Email"
                     type="email"
                     className="mb-4"
-                    required
                     {
                     ...register("email", {
                         required: "Email is required",
@@ -49,18 +59,20 @@ function UserRegister() {
                     })
                     }
                 />
+                <button className='bg-purple-600 text-white py-2 px-4 rounded-md w-full'>Conform Register</button>
             </form>
-            <div>
+            <div className='flex flex-col items-start justify-center gap-2 w-full'>
                 {/* error */}
+                {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
                 {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                 {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
             <div className='text-sm text-gray-600'>
-                <span className='font-bold'> Don't have an account? </span>
-                <Link to={"/register"} className="text-purple-600 hover:underline">Register</Link>
+                <span className='font-bold'>Already have account </span>
+                <Link to={"/login"} className="text-purple-600 hover:underline">Login</Link>
             </div>
         </div>
     )
 }
 
-export default UserRegister
+export default Register
