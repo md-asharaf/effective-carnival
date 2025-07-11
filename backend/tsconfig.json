@@ -20,16 +20,16 @@
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "backend/src",
     "incremental": true,
     "sourceMap": true,
     "baseUrl": "./",
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "typeRoots": ["backend/node_modules/@typbackend/src/@types@types"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["backend/src/*"]
     },
     "types": ["node", "express"]
   },
-  "include": ["src", "src/types"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["backend/src", "backend/src/types"],
+  "exclude": ["backend/node_modules", "dist"]
 }

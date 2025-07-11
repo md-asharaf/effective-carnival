@@ -257,3 +257,61 @@ export const ReviewWithRelationsSchema = ReviewSchema.extend({
     user: z.lazy(() => UserSchema).optional(),
 });
 
+// Type exports
+export type AdminCreate = z.infer<typeof AdminCreateSchema>;
+export type Admin = z.infer<typeof AdminSchema>;
+
+export type UserCreate = z.infer<typeof UserCreateSchema>;
+export type UserUpdate = z.infer<typeof UserUpdateSchema>;
+export type User = z.infer<typeof UserSchema>;
+
+export type VillageCreate = z.infer<typeof VillageCreateSchema>;
+export type VillageUpdate = z.infer<typeof VillageUpdateSchema>;
+export type Village = z.infer<typeof VillageSchema>;
+export type VillageWithRelations = z.infer<typeof VillageWithRelationsSchema>;
+
+export type RoomCreate = z.infer<typeof RoomCreateSchema>;
+export type RoomUpdate = z.infer<typeof RoomUpdateSchema>;
+export type Room = z.infer<typeof RoomSchema>;
+export type RoomWithRelations = z.infer<typeof RoomWithRelationsSchema>;
+
+export type BookingCreate = z.infer<typeof BookingCreateSchema>;
+export type BookingUpdate = z.infer<typeof BookingUpdateSchema>;
+export type Booking = z.infer<typeof BookingSchema>;
+export type BookingWithRelations = z.infer<typeof BookingWithRelationsSchema>;
+
+export type GuideCreate = z.infer<typeof GuideCreateSchema>;
+export type GuideUpdate = z.infer<typeof GuideUpdateSchema>;
+export type Guide = z.infer<typeof GuideSchema>;
+export type GuideWithRelations = z.infer<typeof GuideWithRelationsSchema>;
+
+export type GuideBookingCreate = z.infer<typeof GuideBookingCreateSchema>;
+export type GuideBookingUpdate = z.infer<typeof GuideBookingUpdateSchema>;
+export type GuideBooking = z.infer<typeof GuideBookingSchema>;
+export type GuideBookingWithRelations = z.infer<typeof GuideBookingWithRelationsSchema>;
+
+export type VendorCreate = z.infer<typeof VendorCreateSchema>;
+export type VendorUpdate = z.infer<typeof VendorUpdateSchema>;
+export type Vendor = z.infer<typeof VendorSchema>;
+export type VendorWithRelations = z.infer<typeof VendorWithRelationsSchema>;
+
+export type ProductCreate = z.infer<typeof ProductCreateSchema>;
+export type ProductUpdate = z.infer<typeof ProductUpdateSchema>;
+export type Product = z.infer<typeof ProductSchema>;
+export type ProductWithRelations = z.infer<typeof ProductWithRelationsSchema>;
+
+export type ProductImageCreate = z.infer<typeof ProductImageCreateSchema>;
+export type ProductImageUpdate = z.infer<typeof ProductImageUpdateSchema>;
+export type ProductImage = z.infer<typeof ProductImageSchema>;
+export type ProductImageWithRelations = z.infer<typeof ProductImageWithRelationsSchema>;
+
+export type VillageImageCreate = z.infer<typeof VillageImageCreateSchema>;
+export type VillageImageUpdate = z.infer<typeof VillageImageUpdateSchema>;
+export type VillageImage = z.infer<typeof VillageImageSchema>;
+export type VillageImageWithRelations = z.infer<typeof VillageImageWithRelationsSchema>;
+
+export type ReviewCreate = z.infer<typeof ReviewCreateSchema>;
+export type ReviewUpdate = z.infer<typeof ReviewUpdateSchema>;
+export type Review = z.infer<typeof ReviewSchema>;
+export type ReviewWithRelations = z.infer<typeof ReviewWithRelationsSchema>;
+
