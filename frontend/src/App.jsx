@@ -1,16 +1,17 @@
-import { Outlet } from "react-router-dom";
-import { Footer, Header } from "./components";
-
 function App() {
   return (
-    <div className="">
-      <Header />
-      <main className="mt-16 min-h-screen">
-        <Outlet/>
-      </main>
-      <Footer/>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<UserLogin />} />
+          <Route path="/register" element={<UserRegister />} />
+        </Route>
+        <Route element={<RootLayout />}>
+          <Route path="/" element={<div>Home Page</div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
