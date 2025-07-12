@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { Star, MapPin, Users } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const popularPlaces = [
     {
@@ -77,63 +78,68 @@ export default function PopularVillages() {
 
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                 {popularPlaces.map((place) => (
-                    <Card
+                    <Link
                         key={place.id}
-                        className="group overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-96"
+                        to={`/village-details/${place.id}`}
                     >
-                        <div className="relative h-full">
-                            <img
-                                src={place.image}
-                                alt={place.name}
-                                width={400}
-                                height={320}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
+                        <Card
+                            key={place.id}
+                            className="group overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-96"
+                        >
+                            <div className="relative h-full">
+                                <img
+                                    src={place.image}
+                                    alt={place.name}
+                                    width={400}
+                                    height={320}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
 
-                            {/* Gradient overlay for better text readability */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                {/* Gradient overlay for better text readability */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                            {/* Top badges and rating */}
-                            <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                                {/* <Badge className="bg-white/90 text-black hover:bg-white backdrop-blur-sm">{place.category}</Badge> */}
-                                <div className="bg-black/50 rounded-full px-3 py-1 flex items-center gap-1 backdrop-blur-sm">
-                                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                    <span className="text-white text-sm font-medium">{place.rating}</span>
-                                </div>
-                            </div>
-
-                            {/* Bottom content */}
-                            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                <div className="space-y-3">
-                                    <div>
-                                        <h3 className="text-2xl font-bold group-hover:text-yellow-400 transition-colors">{place.name}</h3>
-                                        <div className="flex items-center gap-1 text-sm text-white/80 mt-1">
-                                            <MapPin className="w-4 h-4" />
-                                            {place.location}
-                                        </div>
-                                    </div>
-
-                                    <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{place.description}</p>
-
-                                    <div className="flex items-center justify-between pt-2">
-                                        <div className="flex items-center gap-1 text-sm text-white/80">
-                                            <Users className="w-4 h-4" />
-                                            <span>{place.visitors} visitors</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            {[...Array(5)].map((_, i) => (
-                                                <Star
-                                                    key={i}
-                                                    className={`w-4 h-4 ${i < Math.floor(place.rating) ? "fill-yellow-400 text-yellow-400" : "text-white/40"
-                                                        }`}
-                                                />
-                                            ))}
-                                        </div>
+                                {/* Top badges and rating */}
+                                <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                                    {/* <Badge className="bg-white/90 text-black hover:bg-white backdrop-blur-sm">{place.category}</Badge> */}
+                                    <div className="bg-black/50 rounded-full px-3 py-1 flex items-center gap-1 backdrop-blur-sm">
+                                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                        <span className="text-white text-sm font-medium">{place.rating}</span>
                                     </div>
                                 </div>
+
+                                {/* Bottom content */}
+                                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                    <div className="space-y-3">
+                                        <div>
+                                            <h3 className="text-2xl font-bold group-hover:text-yellow-400 transition-colors">{place.name}</h3>
+                                            <div className="flex items-center gap-1 text-sm text-white/80 mt-1">
+                                                <MapPin className="w-4 h-4" />
+                                                {place.location}
+                                            </div>
+                                        </div>
+
+                                        <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{place.description}</p>
+
+                                        <div className="flex items-center justify-between pt-2">
+                                            <div className="flex items-center gap-1 text-sm text-white/80">
+                                                <Users className="w-4 h-4" />
+                                                <span>{place.visitors} visitors</span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star
+                                                        key={i}
+                                                        className={`w-4 h-4 ${i < Math.floor(place.rating) ? "fill-yellow-400 text-yellow-400" : "text-white/40"
+                                                            }`}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    </Link>
                 ))}
             </div>
 

@@ -23,18 +23,18 @@ const Home = () => {
           {/* Left content */}
           <div>
             <p className="text-lg uppercase tracking-widest text-gray-300 mb-3">
-              700m+ Above Sea Level
+              BEYOND THE CITY LIGHTS
             </p>
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Experience The {" "}
-              <span className="italic text-teal-300">Soul</span> Of{" "}
-              <span className="text-teal-400">Rural India</span>
+              Find Your Peace, {" "}
+              <span className="italic text-teal-300">One Village</span> At A{" "}
+              <span className="text-teal-400">Time</span>
             </h1>
             <p className="text-lg text-gray-200 mb-8 ">
-              Support local communities, experience cultural heritage, and create memories that matter - far from the noise, close to the soul.
+              Step away from the hustle. Embrace the quiet charm of rural life, connect with local families, and support sustainable tourism. Your authentic journey starts here.
             </p>
             <Link
-              to={"/village-listing"}
+              to={"/villages"}
               className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold transition"
             >
               Explore Villages

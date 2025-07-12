@@ -317,7 +317,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* Host's Properties */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle className="text-2xl">{hostProfile.name}'s Places</CardTitle>
                             </CardHeader>
@@ -379,7 +379,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* Services Offered */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle className="text-2xl">Services & Experiences</CardTitle>
                             </CardHeader>
@@ -402,7 +402,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* Reviews */}
-                        <Card>
+                        <Card className="py-3 mb-2">
                             <CardHeader>
                                 <CardTitle className="text-2xl flex items-center justify-between">
                                     <span>Reviews ({hostProfile.stats.totalReviews})</span>
@@ -452,7 +452,7 @@ export default function PublicHostProfile() {
                     {/* Sidebar */}
                     <div className="space-y-6">
                         {/* Host Stats */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle>Host Details</CardTitle>
                             </CardHeader>
@@ -486,7 +486,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* Contact Information */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle>Contact {hostProfile.name}</CardTitle>
                             </CardHeader>
@@ -514,7 +514,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* House Rules */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle>House Rules</CardTitle>
                             </CardHeader>
@@ -531,7 +531,7 @@ export default function PublicHostProfile() {
                         </Card>
 
                         {/* Safety Features */}
-                        <Card>
+                        <Card className="py-3">
                             <CardHeader>
                                 <CardTitle>Safety & Trust</CardTitle>
                             </CardHeader>

@@ -40,7 +40,7 @@ const VillageStay = () => {
                 <h3 className="text-xl font-semibold mb-2 text-gray-900">{village.title}</h3>
                 <p className="text-gray-600 mb-4 line-clamp-2">{village.shortDescription}</p>
                 <button
-                  onClick={() => navigate(`/village-details`)}
+                  onClick={() => navigate(`/village-details/${village.id}`)}
                   className="text-red-500 font-medium hover:text-red-600 transition-colors cursor-pointer"
                 >
                   See Details

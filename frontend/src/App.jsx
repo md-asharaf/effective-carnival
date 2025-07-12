@@ -23,9 +23,8 @@ function App() {
           <Route path="/Villages" element={<Villages />} />
           <Route path="/about" element={<About />} />
           <Route path="/host-profile" element={<HostProfile />} />
-          <Route path="/host-public-profile" element={<PublicHostProfile />} />
-          <Route path="/village-details" element={<VillageProfile />} />
-
+          <Route path="/host-public-profile/:id" element={<PublicHostProfile />} />
+          <Route path="/village-details/:id" element={<VillageProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>

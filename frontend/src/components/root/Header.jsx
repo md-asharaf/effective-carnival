@@ -1,13 +1,20 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 
+import Profile from '../auth/Profile';
+import useAuthStore from '@/store/authSlice';
+
 const Header = () => {
+
+
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore.getState();
+
   return (
     <header className="w-full bg-green-600 shadow-sm px-6 py-4 flex items-center justify-between fixed top-0 left-0 z-50">
       {/* Logo */}
       <div className="text-2xl font-semibold tracking-tight text-white">
-        Effective Carnival
+        Village stay
       </div>
 
       {/* Navigation Links */}
@@ -19,11 +26,15 @@ const Header = () => {
 
       {/* Contact Us Button */}
       <div>
-        <button
-          onClick={() => navigate("/login")}
-          className="bg-black text-white px-5 py-2 rounded-md text-sm hover:bg-gray-800 transition-all duration-200">
-          Login
-        </button>
+        {isAuthenticated ? (
+          <Profile />
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-black text-white px-5 py-2 rounded-md text-sm hover:bg-gray-800 transition-all duration-200">
+            Login
+          </button>
+        )}
       </div>
     </header>
   );

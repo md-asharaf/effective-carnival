@@ -17,6 +17,7 @@ import {
     TreePine,
     ShoppingBag,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Mock data with realistic images
 const villageData = {
@@ -440,37 +441,42 @@ export default function VillageProfile() {
                     <TabsContent value="guides" className="mt-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {villageData.guides.map((guide) => (
-                                <Card
+                                <Link
                                     key={guide.id}
-                                    className="p-6 shadow-md flex flex-col sm:flex-row items-center gap-6"
+                                    to={`/host-public-profile/${guide.id}`}
+                                    className="block hover:shadow-xl transition-shadow rounded-lg"
                                 >
-                                    <img
-                                        src={guide.image}
-                                        alt={guide.name}
-                                        className="w-24 h-24 rounded-full object-cover flex-shrink-0"
-                                    />
-                                    <div className="text-center sm:text-left">
-                                        <h3 className="text-xl font-semibold">{guide.name}</h3>
-                                        <div className="flex items-center justify-center sm:justify-start gap-1 mt-1">
-                                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                            <span className="font-medium">{guide.rating}</span>
-                                            <span className="text-gray-500 text-sm">
-                                                ({guide.reviews} reviews)
-                                            </span>
+                                    <Card
+                                        className="p-6 shadow-md flex flex-col sm:flex-row items-center gap-6 h-full"
+                                    >
+                                        <img
+                                            src={guide.image}
+                                            alt={guide.name}
+                                            className="w-24 h-24 rounded-full object-cover flex-shrink-0"
+                                        />
+                                        <div className="text-center sm:text-left">
+                                            <h3 className="text-xl font-semibold">{guide.name}</h3>
+                                            <div className="flex items-center justify-center sm:justify-start gap-1 mt-1">
+                                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                                <span className="font-medium">{guide.rating}</span>
+                                                <span className="text-gray-500 text-sm">
+                                                    ({guide.reviews} reviews)
+                                                </span>
+                                            </div>
+                                            <p className="text-gray-600 my-2 text-sm">{guide.bio}</p>
+                                            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                                                {guide.specialties.map((specialty, index) => (
+                                                    <Badge
+                                                        key={index}
+                                                        className="bg-green-100 text-green-800"
+                                                    >
+                                                        {specialty}
+                                                    </Badge>
+                                                ))}
+                                            </div>
                                         </div>
-                                        <p className="text-gray-600 my-2 text-sm">{guide.bio}</p>
-                                        <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                                            {guide.specialties.map((specialty, index) => (
-                                                <Badge
-                                                    key={index}
-                                                    className="bg-green-100 text-green-800"
-                                                >
-                                                    {specialty}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </Card>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
                     </TabsContent>

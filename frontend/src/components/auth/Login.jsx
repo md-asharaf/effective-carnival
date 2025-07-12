@@ -2,14 +2,28 @@ import React from 'react'
 import AuthInput from '../root/AuthInput'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
+import Axios from '@/utils/axioInstance';
+import useAuthStore from '@/store/authSlice';
 
 function Login() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const handleLogin = async (data) => {
+        try {
+            const response = await Axios.post('/login', data);
+            console.log('Login successful:', response.data);
+            useAuthStore.getState().login({
+                user: response.data.user,
+                token: response.data.token
+            });
+            console.log('Login successful:', response.data);
+        } catch (error) {
+            console.error('Login failed:', error);
+
+        }
     };
+
 
 
     return (
@@ -17,7 +31,7 @@ function Login() {
             <h1 className="text-2xl font-bold mb-4 text-purple-600 ">Login Your Account</h1>
 
             <form
-                onSubmit={handleSubmit(onSubmit)} className="w-full"
+                onSubmit={handleSubmit(handleLogin)} className="w-full"
             >
                 <AuthInput
                     label="Email"
@@ -49,6 +63,7 @@ function Login() {
                     })
                     }
                 />
+
                 <button className='bg-purple-600 py-2 text-white font-bold px-4 rounded-md w-full'>Login</button>
             </form>
             <div>
