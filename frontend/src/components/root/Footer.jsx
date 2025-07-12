@@ -2,9 +2,9 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-10 px-6">
+    <footer className="bg-teal-500 text-gray-300 py-10 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        
+
         {/* Logo and tagline */}
         <div>
           <h1 className="text-2xl font-bold text-white mb-3">NESTQUEST</h1>

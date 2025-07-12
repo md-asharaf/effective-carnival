@@ -1,97 +1,85 @@
 import { Card } from "@/components/ui/card"
-import { Star, MapPin, Users } from "lucide-react"
+import { Star, MapPin, Mountain } from "lucide-react"
 import { Link } from "react-router-dom"
 
-const popularPlaces = [
+const villages = [
     {
         id: 1,
-        name: "Santorini, Greece",
-        description: "Famous for its stunning sunsets, white-washed buildings, and crystal-clear waters.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.9,
-        visitors: "2.1M",
-        category: "Island Paradise",
-        location: "Cyclades, Greece",
+        name: "Meadowview",
+        image:
+            "https://plus.unsplash.com/premium_photo-1675198764473-30434364c8b6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmF0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+        location: "Himachal Pradesh, India",
+        elevation: 1650,
+        description:
+            "A serene village nestled in the hills, known for its breathtaking scenery, traditional culture, and peaceful environment.",
     },
     {
         id: 2,
-        name: "Kyoto, Japan",
-        description: "Ancient temples, traditional gardens, and rich cultural heritage await visitors.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.8,
-        visitors: "1.8M",
-        category: "Cultural Heritage",
-        location: "Kansai, Japan",
+        name: "Sundarpur",
+        image:
+            "https://images.unsplash.com/photo-1619441207978-3d326c46e2c9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmF0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+        location: "Uttarakhand, India",
+        elevation: 1300,
+        description:
+            "A picturesque village surrounded by forests and waterfalls, perfect for eco-tourism and spiritual retreats.",
     },
     {
         id: 3,
-        name: "Machu Picchu, Peru",
-        description: "Mysterious ancient Incan citadel perched high in the Andes Mountains.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.9,
-        visitors: "1.5M",
-        category: "Historical Wonder",
-        location: "Cusco Region, Peru",
+        name: "Kalapathar",
+        image:
+            "https://images.unsplash.com/photo-1686579809662-829e8374d0a8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bmF0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+        location: "Sikkim, India",
+        elevation: 2200,
+        description:
+            "A remote Himalayan village famous for snow-capped peaks, traditional wooden homes, and warm hospitality.",
     },
     {
         id: 4,
-        name: "Bali, Indonesia",
-        description: "Tropical paradise with beautiful beaches, rice terraces, and vibrant culture.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.7,
-        visitors: "3.2M",
-        category: "Tropical Paradise",
-        location: "Indonesia",
+        name: "Arambol",
+        image:
+            "https://images.unsplash.com/photo-1615412704911-55d589229864?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bmF0dXJlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+        location: "Goa, India",
+        elevation: 30,
+        description:
+            "A peaceful coastal village known for its clean beaches, yoga retreats, and vibrant local markets.",
     },
     {
         id: 5,
-        name: "Bali, Indonesia",
-        description: "Tropical paradise with beautiful beaches, rice terraces, and vibrant culture.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.7,
-        visitors: "3.2M",
-        category: "Tropical Paradise",
-        location: "Indonesia",
+        name: "Velas",
+        image:
+            "https://images.unsplash.com/photo-1715614412216-244d0dfc4bde?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+        location: "Maharashtra, India",
+        elevation: 120,
+        description:
+            "A turtle nesting village surrounded by hills and ocean, ideal for nature lovers and heritage walks.",
     },
-    {
-        id: 6,
-        name: "Bali, Indonesia",
-        description: "Tropical paradise with beautiful beaches, rice terraces, and vibrant culture.",
-        image: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
-        rating: 4.7,
-        visitors: "3.2M",
-        category: "Tropical Paradise",
-        location: "Indonesia",
-    },
+];
 
-]
 
 export default function PopularVillages() {
     return (
-        <div className="w-full  mx-auto my-3">
+        <div className="w-full mx-auto my-3">
             <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold tracking-tight mb-4">Most Popular Villages</h1>
+                <h1 className="text-4xl font-bold tracking-tight mb-4">Featured Places</h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Discover the world's most beloved destinations, which is a nostalgic journey through breathtaking landscapes, rich cultures, and unforgettable experiences.
+                    Explore serene villages offering authentic culture, breathtaking landscapes, and unforgettable local experiences.
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-                {popularPlaces.map((place) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {villages.map((village) => (
                     <Link
-                        key={place.id}
-                        to={`/village-details/${place.id}`}
+                        key={village.id}
+                        to={`/village-details/${village.id}`}
+                        className="block"
                     >
                         <Card
-                            key={place.id}
                             className="group overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-96"
                         >
                             <div className="relative h-full">
                                 <img
-                                    src={place.image}
-                                    alt={place.name}
-                                    width={400}
-                                    height={320}
+                                    src={village.image}
+                                    alt={village.name}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
@@ -103,7 +91,7 @@ export default function PopularVillages() {
                                     {/* <Badge className="bg-white/90 text-black hover:bg-white backdrop-blur-sm">{place.category}</Badge> */}
                                     <div className="bg-black/50 rounded-full px-3 py-1 flex items-center gap-1 backdrop-blur-sm">
                                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                        <span className="text-white text-sm font-medium">{place.rating}</span>
+                                        <span className="text-white text-sm font-medium">{village.elevation} m</span>
                                     </div>
                                 </div>
 
@@ -111,25 +99,25 @@ export default function PopularVillages() {
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                                     <div className="space-y-3">
                                         <div>
-                                            <h3 className="text-2xl font-bold group-hover:text-yellow-400 transition-colors">{place.name}</h3>
+                                            <h3 className="text-2xl font-bold group-hover:text-yellow-400 transition-colors">{village.name}</h3>
                                             <div className="flex items-center gap-1 text-sm text-white/80 mt-1">
                                                 <MapPin className="w-4 h-4" />
-                                                {place.location}
+                                                {village.location}
                                             </div>
                                         </div>
 
-                                        <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{place.description}</p>
+                                        <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{village.description}</p>
 
                                         <div className="flex items-center justify-between pt-2">
                                             <div className="flex items-center gap-1 text-sm text-white/80">
-                                                <Users className="w-4 h-4" />
-                                                <span>{place.visitors} visitors</span>
+                                                <Mountain className="w-4 h-4" />
+                                                <span>{village.visitors} visitors</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 {[...Array(5)].map((_, i) => (
                                                     <Star
                                                         key={i}
-                                                        className={`w-4 h-4 ${i < Math.floor(place.rating) ? "fill-yellow-400 text-yellow-400" : "text-white/40"
+                                                        className={`w-4 h-4 ${i < Math.floor(village.rating) ? "fill-yellow-400 text-yellow-400" : "text-white/40"
                                                             }`}
                                                     />
                                                 ))}

@@ -17,174 +17,175 @@ import {
     TreePine,
     ShoppingBag,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// import { villages } from "@/lib/Data";
 
 // Mock data with realistic images
 const villageData = {
-    id: "village-ghandruk-001",
-    name: "Ghandruk Village",
-    location: "Annapurna Conservation Area, Kaski District, Nepal",
-    description: `Nestled at an altitude of 2,012 meters in the heart of the Annapurna region, Ghandruk is a picturesque Gurung village that offers visitors an authentic glimpse into traditional Himalayan life. This ancient settlement, with its stone-paved streets and traditional slate-roofed houses, has been home to the brave Gurung community for centuries. The village is renowned for its stunning panoramic views of the Annapurna and Machapuchare (Fishtail) peaks, terraced fields that cascade down the mountainsides like green staircases, and the warm hospitality of its people.`,
-    establishedYear: "14th Century",
-    population: 1200,
-    altitude: "2,012m",
-    bestTimeToVisit: "October to December, March to May",
+    id: "village-khuri-001",
+    name: "Khuri Village",
+    location: "Thar Desert, Jaisalmer District, Rajasthan, India",
+    description: `Experience the timeless beauty of the Thar Desert in Khuri, a serene village nestled amidst golden sand dunes. Located just 50 km from Jaisalmer, Khuri offers an authentic desert experience, away from the commercial hustle. Famous for its traditional mud and straw houses, vibrant local culture, and warm Rajput hospitality, Khuri is a gateway to understanding the desert way of life. The village is a living museum of Rajasthani traditions, where life moves at a slower pace, dictated by the rising and setting of the sun over the magnificent dunes.`,
+    establishedYear: "16th Century",
+    population: 800,
+    altitude: "235m",
+    bestTimeToVisit: "October to March",
     images: [
         {
             id: "img-1",
-            url: "https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg",
+            url: "https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             caption:
-                "Traditional stone houses against the backdrop of snow-capped Annapurna peaks.",
+                "Traditional mud houses and the vast expanse of the Thar Desert.",
             isHero: true,
         },
         {
             id: "img-2",
-            url: "https://images.unsplash.com/photo-1595432542143-a15a47884153?q=80&w=2070&auto=format&fit=crop",
-            caption: "Ancient stone-paved pathways where generations have walked.",
+            url: "https://images.pexels.com/photos/235648/pexels-photo-235648.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+            caption: "A camel caravan traversing the golden sand dunes at sunset.",
         },
         {
             id: "img-3",
-            url: "https://images.unsplash.com/photo-1598459913303-9e148a2f8594?q=80&w=2070&auto=format&fit=crop",
+            url: "https://images.pexels.com/photos/3875215/pexels-photo-3875215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             caption:
-                "Terraced fields during harvest season - a sight unchanged for centuries.",
+                "A local woman in traditional Rajasthani attire carrying water pots.",
         },
         {
             id: "img-4",
-            url: "https://images.unsplash.com/photo-1605641834243-7716ac5a035d?q=80&w=2070&auto=format&fit=crop",
+            url: "https://images.pexels.com/photos/164339/pexels-photo-164339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             caption:
-                "Traditional Gurung women in colorful attire during a local festival.",
+                "Intricately decorated entrance of a traditional desert homestay.",
         },
         {
             id: "img-5",
-            url: "https://images.unsplash.com/photo-1593189591125-14d213d356a3?q=80&w=1932&auto=format&fit=crop",
+            url: "https://images.pexels.com/photos/3875093/pexels-photo-3875093.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             caption:
-                "Morning mist rolling over the village as the sun rises behind Machapuchare.",
+                "A cultural evening with folk music and dance under the starlit desert sky.",
         },
     ],
     rooms: [
         {
             id: "room-1",
-            name: "Gurung Heritage Homestay",
-            hostName: "Dhan Gurung",
+            name: "Desert Haveli Homestay",
+            hostName: "Ranjeet Singh",
             description:
-                "Traditional stone house with authentic Gurung architecture.",
-            price: "25.00",
+                "Authentic mud house stay with traditional decor and desert views.",
+            price: "2000",
             rating: 4.9,
-            reviews: 47,
-            amenities: ["Mountain View", "Traditional Meals"],
+            reviews: 55,
+            amenities: ["Dune View", "Home-cooked Meals"],
             image:
-                "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974&auto=format&fit=crop",
+                "https://images.pexels.com/photos/2474845/pexels-photo-2474845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
         {
             id: "room-2",
-            name: "Annapurna View Lodge",
-            hostName: "Maya Gurung",
-            description: "Comfortable rooms with panoramic Annapurna range views.",
-            price: "35.00",
+            name: "Thar Serenity Camp",
+            hostName: "Meena Devi",
+            description: "Comfortable tented accommodation with modern amenities.",
+            price: "3000",
             rating: 4.8,
-            reviews: 32,
-            amenities: ["Panoramic Views", "Hot Shower", "WiFi"],
+            reviews: 42,
+            amenities: ["Private Tents", "Camel Safari", "Cultural Program"],
             image:
-                "https://images.unsplash.com/photo-1598035736197-041538952811?q=80&w=2070&auto=format&fit=crop",
+                "https://images.pexels.com/photos/261394/pexels-photo-261394.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
         {
             id: "room-3",
-            name: "Traditional Gurung House",
-            hostName: "Bir Gurung",
-            description: "Authentic village experience in a 200-year-old house.",
-            price: "20.00",
+            name: "Rajputana Desert Stay",
+            hostName: "Vikram Singh",
+            description: "Experience royal hospitality in a traditional village home.",
+            price: "2500",
             rating: 4.9,
-            reviews: 28,
-            amenities: ["Historic Building", "Organic Garden"],
+            reviews: 38,
+            amenities: ["Historic Building", "Organic Farm"],
             image:
-                "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2070&auto=format&fit=crop",
+                "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
     ],
     guides: [
         {
             id: "guide-1",
-            name: "Pemba Gurung",
-            bio: "Born and raised in Ghandruk, Pemba has been guiding trekkers for over 15 years.",
-            languages: ["English", "Nepali", "Gurung"],
-            specialties: ["Trekking", "Bird Watching"],
+            name: "Arjun Singh",
+            bio: "A seasoned camel safari guide, Arjun knows the desert like the back of his hand.",
+            languages: ["English", "Hindi", "Marwari"],
+            specialties: ["Camel Safari", "Stargazing"],
             rating: 4.9,
-            reviews: 156,
+            reviews: 182,
             image:
-                "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887&auto=format&fit=crop",
+                "https://images.pexels.com/photos/2896423/pexels-photo-2896423.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
         {
             id: "guide-2",
-            name: "Sita Gurung",
-            bio: "A local cultural expert who specializes in traditional crafts and cooking.",
-            languages: ["English", "Nepali"],
-            specialties: ["Cultural Heritage", "Cooking Classes"],
+            name: "Priya Sharma",
+            bio: "Priya is an expert in Rajasthani culture, crafts, and cuisine.",
+            languages: ["English", "Hindi"],
+            specialties: ["Cultural Tours", "Cooking Workshops"],
             rating: 4.8,
-            reviews: 89,
+            reviews: 95,
             image:
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop",
+                "https://images.pexels.com/photos/3875215/pexels-photo-3875215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
     ],
     reviews: [
         {
             id: "review-1",
-            guestName: "Sarah Mitchell",
-            country: "Australia",
+            guestName: "Emily Carter",
+            country: "United Kingdom",
             rating: 5,
             comment:
-                "Ghandruk exceeded all my expectations. The village is like stepping back in time, but in the most beautiful way. The mountain views are breathtaking.",
-            date: "2024-01-15",
+                "Khuri is a magical place. The silence of the desert is profound. The camel safari at sunset was a highlight of my trip to India. The hospitality was incredibly warm.",
+            date: "2024-02-20",
         },
         {
             id: "review-2",
-            guestName: "Marco Rossi",
-            country: "Italy",
+            guestName: "Rohan Patel",
+            country: "India",
             rating: 5,
             comment:
-                "An authentic experience that touched my soul. Watching the sunrise over Annapurna from the village was magical. The traditional food and peaceful atmosphere made this trip unforgettable.",
-            date: "2024-01-10",
+                "An authentic and soul-stirring experience. The folk music performance under the stars was unforgettable. A must-visit for anyone looking to see the real Rajasthan.",
+            date: "2024-01-15",
         },
     ],
     culture: {
-        ethnicity: "Gurung",
-        language: "Gurung, Nepali",
-        religion: "Buddhism, Hinduism",
+        ethnicity: "Rajput, Bhil, Marwari",
+        language: "Marwari, Hindi",
+        religion: "Hinduism",
         traditions: [
-            "Rich oral tradition of 'Rodi,' where villagers gather to sing, dance, and share stories.",
-            "Expertise in weaving traditional 'Dhaka' fabric for clothing and blankets.",
-            "Celebration of 'Lhosar' (New Year) with family feasts and community events.",
-            "Strong martial heritage, with many Gurungs serving in the British and Indian armies.",
+            "Vibrant folk music and 'Kalbelia' dance performances in the evenings.",
+            "Expertise in crafting beautiful 'Ralli' quilts and leather goods.",
+            "Celebration of the 'Desert Festival' with camel races, folk art, and turban-tying competitions.",
+            "Strong tradition of hospitality, treating guests as an incarnation of God ('Atithi Devo Bhava').",
         ],
     },
     activities: [
         {
-            name: "Cultural Village Walk",
+            name: "Sunset Camel Safari",
             duration: "3 hours",
-            price: "15.00",
-            description: "Guided tour through ancient pathways and cultural sites.",
+            price: "800",
+            description: "Ride through the sand dunes and witness a spectacular desert sunset.",
         },
         {
-            name: "Traditional Cooking Class",
+            name: "Rajasthani Cooking Workshop",
             duration: "3 hours",
-            price: "25.00",
-            description: "Learn to prepare authentic Gurung dishes.",
+            price: "1200",
+            description: "Learn to cook local delicacies like 'Dal Baati Churma'.",
         },
         {
-            name: "Sunrise Mountain Viewing",
+            name: "Stargazing in the Desert",
             duration: "2 hours",
-            price: "10.00",
-            description: "Early morning hike to the best viewpoint for sunrise.",
+            price: "500",
+            description: "Experience the clear, unpolluted night sky of the Thar Desert.",
         },
         {
-            name: "Handicraft Workshop",
-            duration: "4 hours",
-            price: "30.00",
-            description: "Learn traditional weaving from local artisans.",
+            name: "Village Heritage Walk",
+            duration: "2 hours",
+            price: "400",
+            description: "Explore the village, interact with locals, and learn about their lifestyle.",
         },
     ],
     stats: {
-        averageRating: 4.85,
-        totalReviews: 234,
-        establishedYear: "14th Century",
+        averageRating: 4.88,
+        totalReviews: 312,
+        establishedYear: "16th Century",
     },
 };
 
@@ -221,6 +222,7 @@ export default function VillageProfile() {
             color: "text-purple-600",
         },
     ];
+    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen bg-slate-50 text-gray-800 font-sans">
@@ -322,7 +324,7 @@ export default function VillageProfile() {
                                         <div className="flex justify-between items-start mb-2">
                                             <h4 className="font-semibold text-lg">{activity.name}</h4>
                                             <span className="text-green-600 font-bold">
-                                                ${activity.price}
+                                                ₹{activity.price}
                                             </span>
                                         </div>
                                         <p className="text-gray-600 mb-3 text-sm">
@@ -333,6 +335,7 @@ export default function VillageProfile() {
                                                 Duration: {activity.duration}
                                             </span>
                                             <Button
+                                                onClick={() => navigate(`/village-booking/${index}`)}
                                                 size="sm"
                                                 className="bg-green-600 hover:bg-green-700"
                                             >
@@ -429,7 +432,7 @@ export default function VillageProfile() {
                                                 </span>
                                             </div>
                                             <span className="text-lg font-bold text-green-600">
-                                                ${room.price}/night
+                                                ₹{room.price}/night
                                             </span>
                                         </div>
                                     </CardContent>

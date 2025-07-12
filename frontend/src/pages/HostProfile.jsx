@@ -1,4 +1,4 @@
-// import { useState } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,8 @@ import {
   Mail,
   Globe,
   PlusCircle,
+  ShieldCheck,
+  X, // Import the X icon for the close button
 } from "lucide-react"
 
 // Mock data based on the schema
@@ -121,7 +123,7 @@ const hostData = {
 }
 
 export default function HostProfile() {
-  // const [activeTab, setActiveTab] = useState("overview")
+  const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
@@ -233,6 +235,27 @@ export default function HostProfile() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Host Verification Section */}
+            <div className="my-8 bg-green-50/50 border border-green-100 rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="flex items-center gap-6">
+                <ShieldCheck className="w-16 h-16 text-green-500 flex-shrink-0" />
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800">Become a Verified Host</h3>
+                  <p className="text-gray-600 mt-1">
+                    Build trust with guests by verifying your identity with your Aadhaar card. Verified hosts get a special badge on their profile.
+                  </p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 mt-4 md:mt-0">
+                <Button
+                  onClick={() => setIsVerificationModalOpen(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md shadow-md"
+                >
+                  Verify Now
+                </Button>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="rooms" className="mt-6 space-y-6">
@@ -333,6 +356,64 @@ export default function HostProfile() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Aadhaar Verification Modal */}
+      {isVerificationModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md m-4 relative transform transition-all duration-300 scale-100">
+            <button
+              onClick={() => setIsVerificationModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="text-center mb-6">
+              <ShieldCheck className="w-12 h-12 text-green-500 mx-auto mb-3" />
+              <h2 className="text-2xl font-bold text-gray-800">Aadhaar Verification</h2>
+              <p className="text-gray-500 mt-1">Verify your identity to build trust.</p>
+            </div>
+
+            <form className="space-y-6">
+              <div>
+                <label htmlFor="aadhaar" className="block text-sm font-medium text-gray-700 mb-1">
+                  Aadhaar Number
+                </label>
+                <input
+                  type="text"
+                  id="aadhaar"
+                  placeholder="xxxx-xxxx-xxxx"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1">
+                  Enter OTP
+                </label>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    id="otp"
+                    placeholder="6-digit OTP"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                  />
+                  <Button variant="outline" className="flex-shrink-0">
+                    Send OTP
+                  </Button>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-base font-semibold"
+              >
+                Verify Aadhaar
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

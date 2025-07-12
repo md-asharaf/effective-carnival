@@ -24,23 +24,23 @@ import {
 
 // Mock data for public host profile
 const hostProfile = {
-    id: "host-rajesh-001",
-    name: "Rajesh Gurung",
-    joinedDate: "January 2020",
-    location: "Ghandruk Village, Nepal",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop",
-    coverImage: "https://images.unsplash.com/photo-1542692423-34015273c35e?q=80&w=2070&auto=format&fit=crop",
+    id: "host-rohan-001",
+    name: "Rohan Sharma",
+    joinedDate: "March 2019",
+    location: "Udaipur, Rajasthan, India",
+    avatar: "https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=1887&auto=format&fit=crop",
+    // coverImage: "https://images.unsplash.com/photo-1524293581917-878a6d017c71?q=80&w=2070&auto=format&fit=crop",
 
     // Host story and bio
-    bio: `Namaste! I'm Rajesh, born and raised in the beautiful village of Ghandruk. My family has lived here for generations, and I'm passionate about sharing our rich Gurung culture with visitors from around the world. 
+    bio: `Namaste! I'm Rohan, and my family has been the custodian of this beautiful haveli in the heart of Udaipur for over a century. I am passionate about sharing the rich heritage and vibrant culture of Rajasthan with travelers from all over the globe.
 
-I started hosting travelers in 2020 because I believe that authentic cultural exchange happens best when you stay with local families. My wife Maya and I love cooking traditional meals, sharing stories about our village's history, and helping guests discover hidden gems in the Annapurna region.
+I started hosting in 2019 to offer guests an authentic experience of royal Rajasthani hospitality. My wife, Priya, and I delight in preparing traditional Mewari cuisine, sharing tales of the city's glorious past, and helping our guests discover the magic of the 'City of Lakes'.
 
-When I'm not hosting, you'll find me tending to our organic vegetable garden, guiding trekkers on mountain trails, or playing traditional Gurung music with friends in the village square.`,
+When I'm not attending to my guests, I practice miniature painting, a local art form passed down through generations in my family. I also enjoy playing the sitar and exploring the ancient Aravalli hills surrounding our city.`,
 
-    languages: ["English", "Nepali", "Gurung", "Hindi"],
-    responseTime: "Within 1 hour",
-    responseRate: 98,
+    languages: ["English", "Hindi", "Rajasthani", "Marwari"],
+    responseTime: "Within 2 hours",
+    responseRate: 95,
 
     // Verification and trust signals
     verifications: [
@@ -52,10 +52,10 @@ When I'm not hosting, you'll find me tending to our organic vegetable garden, gu
 
     // Host stats
     stats: {
-        totalGuests: 247,
-        yearsHosting: 4,
+        totalGuests: 312,
+        yearsHosting: 5,
         averageRating: 4.9,
-        totalReviews: 89,
+        totalReviews: 115,
         superhostStatus: true,
     },
 
@@ -63,29 +63,29 @@ When I'm not hosting, you'll find me tending to our organic vegetable garden, gu
     properties: [
         {
             id: "room-1",
-            name: "Traditional Gurung Homestay",
-            type: "Private room in family home",
+            name: "Maharana Heritage Room",
+            type: "Private room in a historic haveli",
             guests: 2,
             bedrooms: 1,
             bathrooms: 1,
-            price: 25,
+            price: 3500,
             rating: 4.9,
-            reviews: 45,
-            image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974&auto=format&fit=crop",
-            amenities: ["Mountain View", "Shared Kitchen", "Traditional Meals", "Garden"],
+            reviews: 65,
+            image: "https://images.unsplash.com/photo-1626556102433-01e5a444354c?q=80&w=1974&auto=format&fit=crop",
+            amenities: ["Lake View", "Jharokha (Balcony)", "Traditional Decor", "Courtyard Access"],
         },
         {
             id: "room-2",
-            name: "Annapurna View Room",
-            type: "Private room with mountain view",
+            name: "Pichola Lake View Suite",
+            type: "Private suite with lake view",
             guests: 3,
             bedrooms: 1,
             bathrooms: 1,
-            price: 35,
+            price: 5000,
             rating: 4.8,
-            reviews: 32,
-            image: "https://images.unsplash.com/photo-1598035736197-041538952811?q=80&w=2070&auto=format&fit=crop",
-            amenities: ["Panoramic Views", "Private Bathroom", "WiFi", "Breakfast"],
+            reviews: 50,
+            image: "https://images.unsplash.com/photo-1618221118493-71957a326364?q=80&w=2070&auto=format&fit=crop",
+            amenities: ["Panoramic Lake Views", "Private Bathroom", "WiFi", "Breakfast Included"],
         },
     ],
 
@@ -93,63 +93,63 @@ When I'm not hosting, you'll find me tending to our organic vegetable garden, gu
     reviews: [
         {
             id: "review-1",
-            guestName: "Sarah M.",
-            guestAvatar: "https://randomuser.me/api/portraits/women/44.jpg",
-            country: "Australia",
+            guestName: "Aisha K.",
+            guestAvatar: "https://randomuser.me/api/portraits/women/45.jpg",
+            country: "India",
             rating: 5,
-            date: "January 2024",
+            date: "February 2024",
             comment:
-                "Rajesh and Maya are incredible hosts! They welcomed us like family and shared so much about Gurung culture. The traditional meals were amazing, and the mountain views from their home are breathtaking. Highly recommend staying here for an authentic Nepal experience.",
-            propertyName: "Traditional Gurung Homestay",
+                "Rohan and Priya are the epitome of Indian hospitality. They made us feel like royalty in their stunning haveli. The home-cooked Rajasthani food was a highlight, and the views of Lake Pichola were simply magical. A truly authentic Udaipur experience!",
+            propertyName: "Pichola Lake View Suite",
         },
         {
             id: "review-2",
-            guestName: "Marco R.",
-            guestAvatar: "https://randomuser.me/api/portraits/men/32.jpg",
-            country: "Italy",
+            guestName: "John D.",
+            guestAvatar: "https://randomuser.me/api/portraits/men/33.jpg",
+            country: "USA",
             rating: 5,
-            date: "December 2023",
+            date: "January 2024",
             comment:
-                "What an unforgettable experience! Rajesh took us on a village tour and taught us about local traditions. Maya's cooking is exceptional - we learned to make dal bhat and momos. The hospitality here is beyond words.",
-            propertyName: "Annapurna View Room",
+                "An unforgettable stay! Rohan is a fantastic host, full of stories about the city's history. He even gave us a brief lesson in miniature painting. The haveli is a work of art itself. Highly recommended for a deep cultural immersion.",
+            propertyName: "Maharana Heritage Room",
         },
         {
             id: "review-3",
-            guestName: "Yuki T.",
-            guestAvatar: "https://randomuser.me/api/portraits/women/68.jpg",
-            country: "Japan",
+            guestName: "Anika S.",
+            guestAvatar: "https://randomuser.me/api/portraits/women/69.jpg",
+            country: "India",
             rating: 5,
-            date: "November 2023",
+            date: "December 2023",
             comment:
-                "Rajesh is a wonderful storyteller and guide. He shared fascinating stories about village life and helped us understand Gurung customs. The room was clean and comfortable, and we felt completely safe and welcome.",
-            propertyName: "Traditional Gurung Homestay",
+                "Staying at Rohan's haveli felt like stepping back in time, but with all modern comforts. The hospitality was warm and genuine. Priya's cooking classes are a must-do! We learned to make Laal Maas and it was delicious.",
+            propertyName: "Maharana Heritage Room",
         },
     ],
 
     // Host offerings and services
     services: [
         {
-            name: "Cultural Tours",
-            description: "Guided walks through the village with stories and history",
+            name: "Old City Heritage Walk",
+            description: "A guided tour through the historic lanes of Udaipur",
             price: "Free for guests",
             icon: Users,
         },
         {
-            name: "Traditional Cooking Classes",
-            description: "Learn to prepare authentic Gurung dishes",
-            price: "$15 per person",
+            name: "Rajasthani Cooking Class",
+            description: "Learn to cook authentic Mewari dishes like Dal Baati",
+            price: "₹1500 per person",
             icon: Utensils,
         },
         {
-            name: "Mountain Sunrise Tours",
-            description: "Early morning hike to best viewpoints",
-            price: "$10 per person",
+            name: "Sunset Boat Ride on Lake Pichola",
+            description: "Enjoy a serene boat ride with stunning sunset views",
+            price: "₹800 per person",
             icon: Camera,
         },
         {
             name: "Airport Pickup",
-            description: "Transportation from Pokhara airport",
-            price: "$25 per trip",
+            description: "Transportation from Udaipur Airport",
+            price: "₹1200 per trip",
             icon: Car,
         },
     ],
@@ -167,19 +167,19 @@ When I'm not hosting, you'll find me tending to our organic vegetable garden, gu
     // Contact preferences
     contactInfo: {
         preferredContact: "WhatsApp or Email",
-        phone: "+977-9841234567",
-        email: "rajesh@ghandrukstay.com",
-        whatsapp: "+977-9841234567",
+        phone: "+91-9876543210",
+        email: "rohan.sharma@havelistay.com",
+        whatsapp: "+91-9876543210",
     },
 
     // Host interests and hobbies
     interests: [
-        "Mountain Trekking",
-        "Traditional Music",
-        "Organic Farming",
+        "Rajasthani Folk Music",
+        "Miniature Painting",
+        "Local Cuisine",
+        "History of Mewar",
+        "Sitar",
         "Photography",
-        "Cultural Heritage",
-        "Storytelling",
     ],
 }
 
@@ -190,12 +190,12 @@ export default function PublicHostProfile() {
         <div className="min-h-screen bg-gray-50">
             {/* Cover Photo */}
             <div className="relative h-64 md:h-80">
-                <img
+                {/* <img
                     src={hostProfile.coverImage || "/placeholder.svg"}
                     alt="Host cover photo"
                     fill
                     className="object-cover"
-                />
+                /> */}
                 <div className="absolute inset-0 bg-black/20" />
             </div>
 
@@ -366,7 +366,7 @@ export default function PublicHostProfile() {
                                                 </div>
 
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-xl font-bold text-green-600">${property.price}/night</span>
+                                                    <span className="text-xl font-bold text-green-600">₹{property.price}/night</span>
                                                     <Button size="sm" className="bg-green-600 hover:bg-green-700">
                                                         View Details
                                                     </Button>

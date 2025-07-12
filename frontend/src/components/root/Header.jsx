@@ -11,7 +11,7 @@ const Header = () => {
   const { isAuthenticated } = useAuthStore.getState();
 
   return (
-    <header className="w-full bg-green-600 shadow-sm px-6 py-4 flex items-center justify-between fixed top-0 left-0 z-50">
+    <header className="w-full bg-teal-500 shadow-sm px-6 py-4 flex items-center justify-between fixed top-0 left-0 z-50">
       {/* Logo */}
       <div className="text-2xl font-semibold tracking-tight text-white">
         Village stay
@@ -20,8 +20,8 @@ const Header = () => {
       {/* Navigation Links */}
       <nav className="flex space-x-6  text-white text-2xl font-medium">
         <NavLink to="/" className={(isActive) => isActive ? 'active' : ""}>Home</NavLink>
-        <NavLink to="/About" className={(isActive) => isActive ? 'active' : ""}>About</NavLink>
         <NavLink to="/Villages" className={(isActive) => isActive ? 'active' : ""}>Villages</NavLink>
+        <NavLink to="/About" className={(isActive) => isActive ? 'active' : ""}>About</NavLink>
       </nav>
 
       {/* Contact Us Button */}

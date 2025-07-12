@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MostVisitedPlaces } from "../components";
 import PopularVillages from "@/components/PopularVillages";
 import WhyVillageStay from "@/components/Features";
+import { ShieldCheck } from "lucide-react";
 
 const Home = () => {
   return (
@@ -26,9 +27,9 @@ const Home = () => {
               BEYOND THE CITY LIGHTS
             </p>
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Find Your Peace, {" "}
-              <span className="italic text-teal-300">One Village</span> At A{" "}
-              <span className="text-teal-400">Time</span>
+              Let's Explore, {" "}
+              <span className="italic text-teal-300"> </span> the soul{" "}
+              <span className="text-teal-400">of India</span>
             </h1>
             <p className="text-lg text-gray-200 mb-8 ">
               Step away from the hustle. Embrace the quiet charm of rural life, connect with local families, and support sustainable tourism. Your authentic journey starts here.
@@ -47,6 +48,10 @@ const Home = () => {
         {/* <h2 className="text-3xl text-center font-bold mb-4">Most Visited Places</h2> */}
         {/* <MostVisitedPlaces/> */}
         <PopularVillages />
+
+        {/* Host Verification Section */}
+
+
         <WhyVillageStay />
       </section>
     </div>

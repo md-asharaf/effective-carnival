@@ -9,6 +9,7 @@ import About from "./components/About";
 import HostProfile from "./pages/HostProfile";
 import VillageProfile from "./pages/VillageProfile";
 import PublicHostProfile from "./pages/pulic-host-profile";
+import Booking from "./pages/Booking";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/host-profile" element={<HostProfile />} />
           <Route path="/host-public-profile/:id" element={<PublicHostProfile />} />
           <Route path="/village-details/:id" element={<VillageProfile />} />
+          <Route path="/village-booking/:id" element={<Booking />} />
         </Route>
       </Routes>
     </BrowserRouter>
