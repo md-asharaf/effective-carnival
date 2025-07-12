@@ -5,6 +5,10 @@ import AuthLayout from "./components/layout/AuthLayout";
 import RootLayout from "./components/layout/RootLayout";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import About from "./components/About";
+import HostProfile from "./pages/HostProfile";
+import VillageProfile from "./pages/VillageProfile";
+import PublicHostProfile from "./pages/pulic-host-profile";
 
 function App() {
   return (
@@ -16,7 +20,11 @@ function App() {
         </Route>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/village-listing" element={<Villages />} />
+          <Route path="/Villages" element={<Villages />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/host-profile" element={<HostProfile />} />
+          <Route path="/host-public-profile" element={<PublicHostProfile />} />
+          <Route path="/village-details" element={<VillageProfile />} />
 
         </Route>
       </Routes>

@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MostVisitedPlaces } from "../components";
+import PopularVillages from "@/components/PopularVillages";
+import WhyVillageStay from "@/components/Features";
 
 const Home = () => {
   return (
-    <>
+    <div className="min-h-screen bg-[#FFF8ED]">
+
       {/* Hero section */}
       <section
-        className="relative bg-cover bg-center text-white h-[90vh] flex items-center justify-center px-6"
+        className="relative bg-cover bg-center text-white h-[80vh] flex items-center justify-center px-6"
         style={{
-          backgroundImage: 'url("/beautiful-rainbow-nature.jpg")',
+          backgroundImage: 'url("https://images.pexels.com/photos/462042/pexels-photo-462042.jpeg")',
         }}
       >
         {/* Overlay */}
@@ -41,10 +44,13 @@ const Home = () => {
       </section>
 
       <section className="bg-white  w-full px-20 py-10">
-        <h2 className="text-3xl text-center font-bold mb-4">Most Visited Places</h2>
-        <MostVisitedPlaces/>
+        {/* <h2 className="text-3xl text-center font-bold mb-4">Most Visited Places</h2> */}
+        {/* <MostVisitedPlaces/> */}
+        <PopularVillages />
+        <WhyVillageStay />
       </section>
-    </>
+    </div>
+
   );
 };
 
