@@ -1,259 +1,258 @@
-import { any, z } from "zod";
+import { z } from 'zod';
 
-// Enums
-
-export const AdminCreateSchema = z.object({
-    email: z.string().email("Invalid email format"),
-});
-
-export const AdminSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string().email(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+// Base schemas
+export const adminSchema = z.object({
+  id: z.string(),
+  email: z.string().email(),
 });
 
-// Base schemas for creating/updating records
-export const UserCreateSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email format"),
-    phone: z.string().optional(),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    role: z.enum(["visitor", "room_owner", "guide", "vendor_owner"]).default("visitor"),
-});
-export const UserUpdateSchema = UserCreateSchema.partial();
-
-export const UserSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string().email(),
-    phone: z.string().nullable().optional(),
-    password: z.string(),
-    role: z.enum(["visitor", "room_owner", "guide", "vendor_owner"]),
-    createdAt: z.date(),
+export const userSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  createdAt: z.date(),
 });
 
-export const VillageCreateSchema = z.object({
-    name: z.string().min(1, "Village name is required"),
-    location: z.string().optional(),
-    description: z.string().optional(),
-});
-export const VillageUpdateSchema = VillageCreateSchema.partial();
-export const VillageSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    location: z.string().nullable().optional(),
-    description: z.string().nullable().optional(),
-    createdAt: z.date(),
-});
-export const VillageWithRelationsSchema = VillageSchema.extend({
-    rooms: z.array(z.lazy(() => RoomSchema)).optional(),
-    guides: z.array(z.lazy(() => GuideSchema)).optional(),
-    vendors: z.array(z.lazy(() => VendorSchema)).optional(),
-    products: z.array(z.lazy(() => ProductSchema)).optional(),
-    villageImages: z.array(z.lazy(() => VillageImageSchema)).optional(),
+export const villageSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  location: z.string(),
+  description: z.string().optional(),
+  createdAt: z.date(),
 });
 
-// Room
-export const RoomCreateSchema = z.object({
-    villageId: z.string(),
-    name: z.string().min(1, "Room name is required"),
-    description: z.string().optional(),
-    price: z.number(),
-    available: z.boolean().optional(),
-});
-export const RoomUpdateSchema = RoomCreateSchema.partial();
-export const RoomSchema = z.object({
-    id: z.string(),
-    villageId: z.string(),
-    name: z.string(),
-    description: z.string().nullable().optional(),
-    price: z.number(),
-    available: z.boolean(),
-    createdAt: z.date(),
-});
-export const RoomWithRelationsSchema = RoomSchema.extend({
-    village: z.lazy(() => VillageSchema).optional(),
-    bookings: z.array(z.lazy(() => BookingSchema)).optional(),
+export const hostSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  villageId: z.string(),
+  bio: z.string().optional(),
+  languages: z.string().optional(),
+  rating: z.any(),
+  createdAt: z.date(),
 });
 
-// Booking
-export const BookingCreateSchema = z.object({
-    userId: z.string(),
-    roomId: z.string(),
-    startDate: z.string(),
-    endDate: z.string(),
-    totalPrice: z.number(),
-    status: z.string().optional(),
-});
-export const BookingUpdateSchema = BookingCreateSchema.partial();
-export const BookingSchema = z.object({
-    id: z.string(),
-    userId: z.string(),
-    roomId: z.string(),
-    startDate: z.date(),
-    endDate: z.date(),
-    totalPrice: z.number(),
-    status: z.string(),
-    createdAt: z.date(),
-});
-export const BookingWithRelationsSchema = BookingSchema.extend({
-    user: z.lazy(() => UserSchema).optional(),
-    room: z.lazy(() => RoomSchema).optional(),
+export const roomSchema = z.object({
+  id: z.string(),
+  hostId: z.string(),
+  villageId: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  price: z.any(),
+  available: z.boolean(),
+  createdAt: z.date(),
 });
 
-// Guide
-export const GuideCreateSchema = z.object({
-    userId: z.string(),
-    villageId: z.string(),
-    bio: z.string().optional(),
-    languages: z.string().optional(),
-    rating: z.number().optional(),
-});
-export const GuideUpdateSchema = GuideCreateSchema.partial();
-export const GuideSchema = z.object({
-    id: z.string(),
-    userId: z.string(),
-    villageId: z.string(),
-    bio: z.string().nullable().optional(),
-    languages: z.string().nullable().optional(),
-    rating: z.number(),
-    createdAt: z.date(),
-});
-export const GuideWithRelationsSchema = GuideSchema.extend({
-    user: z.lazy(() => UserSchema).optional(),
-    village: z.lazy(() => VillageSchema).optional(),
-    guideBookings: z.array(z.lazy(() => GuideBookingSchema)).optional(),
+export const vendorSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  villageId: z.string(),
+  name: z.string(),
+  contact: z.string().optional(),
+  rating: z.any(),
+  createdAt: z.date(),
 });
 
-// GuideBooking
-export const GuideBookingCreateSchema = z.object({
-    userId: z.string(),
-    guideId: z.string(),
-    villageId: z.string(),
-    startDate: z.string(),
-    endDate: z.string(),
-    status: z.string().optional(),
-});
-export const GuideBookingUpdateSchema = GuideBookingCreateSchema.partial();
-export const GuideBookingSchema = z.object({
-    id: z.string(),
-    userId: z.string(),
-    guideId: z.string(),
-    villageId: z.string(),
-    startDate: z.date(),
-    endDate: z.date(),
-    status: z.string(),
-    createdAt: z.date(),
-});
-export const GuideBookingWithRelationsSchema = GuideBookingSchema.extend({
-    user: z.lazy(() => UserSchema).optional(),
-    guide: z.lazy(() => GuideSchema).optional(),
-    village: z.lazy(() => VillageSchema).optional(),
+export const productSchema = z.object({
+  id: z.string(),
+  vendorId: z.string(),
+  villageId: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  price: z.any(), 
+  rating: z.any(),
+  createdAt: z.date(),
 });
 
-// Vendor
-export const VendorCreateSchema = z.object({
-    userId: z.string(),
-    villageId: z.string(),
-    name: z.string().min(1, "Vendor name is required"),
-    contact: z.string().optional(),
-    rating: z.number().optional(),
-});
-export const VendorUpdateSchema = VendorCreateSchema.partial();
-export const VendorSchema = z.object({
-    id: z.string(),
-    userId: z.string(),
-    villageId: z.string(),
-    name: z.string(),
-    contact: z.string().nullable().optional(),
-    rating: z.number(),
-    createdAt: z.date(),
-});
-export const VendorWithRelationsSchema = VendorSchema.extend({
-    user: z.lazy(() => UserSchema).optional(),
-    village: z.lazy(() => VillageSchema).optional(),
-    products: z.array(z.lazy(() => ProductSchema)).optional(),
+export const reviewSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  productId: z.string().optional(),
+  hostId: z.string().optional(),
+  villageId: z.string().optional(),
+  roomId: z.string().optional(),
+  rating: z.number().min(1).max(5),
+  comment: z.string().optional(),
+  createdAt: z.date(),
 });
 
-// Product
-export const ProductCreateSchema = z.object({
-    vendorId: z.string(),
-    villageId: z.string(),
-    name: z.string().min(1, "Product name is required"),
-    description: z.string().optional(),
-    price: z.number(),
-    rating: z.number().optional(),
-});
-export const ProductUpdateSchema = ProductCreateSchema.partial();
-export const ProductSchema = z.object({
-    id: z.string(),
-    vendorId: z.string(),
-    villageId: z.string(),
-    name: z.string(),
-    description: z.string().nullable().optional(),
-    price: z.number(),
-    rating: z.number(),
-    createdAt: z.date(),
-});
-export const ProductWithRelationsSchema = ProductSchema.extend({
-    vendor: z.lazy(() => VendorSchema).optional(),
-    village: z.lazy(() => VillageSchema).optional(),
-    productImages: z.array(z.lazy(() => ProductImageSchema)).optional(),
+export const imageSchema = z.object({
+  id: z.string(),
+  productId: z.string().optional(),
+  villageId: z.string().optional(),
+  roomId: z.string().optional(),
+  hostId: z.string().optional(),
+  reviewId: z.string().optional(),
+  url: z.string().url(),
+  createdAt: z.date(),
 });
 
-// ProductImage
-export const ProductImageCreateSchema = z.object({
-    productId: z.string(),
-    url: z.string().url("Invalid URL format"),
-});
-export const ProductImageUpdateSchema = ProductImageCreateSchema.partial();
-export const ProductImageSchema = z.object({
-    id: z.string(),
-    productId: z.string(),
-    url: z.string(),
-    createdAt: z.date(),
-});
-export const ProductImageWithRelationsSchema = ProductImageSchema.extend({
-    product: z.lazy(() => ProductSchema).optional(),
+export const bookingSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  roomId: z.string(),
+  startDate: z.date(),
+  endDate: z.date(),
+  totalPrice: z.any(), // Prisma Decimal type
+  status: z.string(),
+  createdAt: z.date(),
 });
 
-// VillageImage
-export const VillageImageCreateSchema = z.object({
-    villageId: z.string(),
-    url: z.string().url("Invalid URL format"),
-});
-export const VillageImageUpdateSchema = VillageImageCreateSchema.partial();
-export const VillageImageSchema = z.object({
-    id: z.string(),
-    villageId: z.string(),
-    url: z.string(),
-    createdAt: z.date(),
-});
-export const VillageImageWithRelationsSchema = VillageImageSchema.extend({
-    village: z.lazy(() => VillageSchema).optional(),
+// Create schemas
+export const createAdminSchema = adminSchema.omit({ id: true });
+export const createUserSchema = userSchema.omit({ id: true, createdAt: true });
+export const createVillageSchema = villageSchema.omit({ id: true, createdAt: true });
+export const createHostSchema = hostSchema.omit({ id: true, createdAt: true });
+export const createRoomSchema = roomSchema.omit({ id: true, createdAt: true });
+export const createVendorSchema = vendorSchema.omit({ id: true, createdAt: true });
+export const createProductSchema = productSchema.omit({ id: true, createdAt: true });
+export const createReviewSchema = reviewSchema.omit({ id: true, createdAt: true });
+export const createImageSchema = imageSchema.omit({ id: true, createdAt: true });
+export const createBookingSchema = bookingSchema.omit({ id: true, createdAt: true });
+
+// Update schemas
+export const updateAdminSchema = createAdminSchema.partial();
+export const updateUserSchema = createUserSchema.partial();
+export const updateVillageSchema = createVillageSchema.partial();
+export const updateHostSchema = createHostSchema.partial();
+export const updateRoomSchema = createRoomSchema.partial();
+export const updateVendorSchema = createVendorSchema.partial();
+export const updateProductSchema = createProductSchema.partial();
+export const updateReviewSchema = createReviewSchema.partial();
+export const updateImageSchema = createImageSchema.partial();
+export const updateBookingSchema = createBookingSchema.partial();
+
+// Relation schemas
+export const userWithRelationsSchema = userSchema.extend({
+  bookings: z.array(bookingSchema).optional(),
+  hosts: z.array(hostSchema).optional(),
+  vendors: z.array(vendorSchema).optional(),
+  reviews: z.array(reviewSchema).optional(),
 });
 
-// Review
-export const ReviewCreateSchema = z.object({
-    userId: z.string(),
-    targetType: z.enum(["room", "guide", "product"]),
-    targetId: z.string(),
-    rating: z.number().min(1).max(5),
-    comment: z.string().optional(),
+export const villageWithRelationsSchema = villageSchema.extend({
+  rooms: z.array(roomSchema).optional(),
+  hosts: z.array(hostSchema).optional(),
+  vendors: z.array(vendorSchema).optional(),
+  products: z.array(productSchema).optional(),
+  images: z.array(imageSchema).optional(),
+  reviews: z.array(reviewSchema).optional(),
 });
-export const ReviewUpdateSchema = ReviewCreateSchema.partial();
-export const ReviewSchema = z.object({
-    id: z.string(),
-    userId: z.string(),
-    targetType: z.enum(["room", "guide", "product"]),
-    targetId: z.string(),
-    rating: z.number(),
-    comment: z.string().nullable().optional(),
-    createdAt: z.date(),
+
+export const hostWithRelationsSchema = hostSchema.extend({
+  user: userSchema.optional(),
+  village: villageSchema.optional(),
+  rooms: z.array(roomSchema).optional(),
+  reviews: z.array(reviewSchema).optional(),
+  images: z.array(imageSchema).optional(),
 });
-export const ReviewWithRelationsSchema = ReviewSchema.extend({
-    user: z.lazy(() => UserSchema).optional(),
+
+export const roomWithRelationsSchema = roomSchema.extend({
+  village: villageSchema.optional(),
+  host: hostSchema.optional(),
+  bookings: z.array(bookingSchema).optional(),
+  images: z.array(imageSchema).optional(),
+  reviews: z.array(reviewSchema).optional(),
 });
+
+export const vendorWithRelationsSchema = vendorSchema.extend({
+  user: userSchema.optional(),
+  village: villageSchema.optional(),
+  products: z.array(productSchema).optional(),
+});
+
+export const productWithRelationsSchema = productSchema.extend({
+  vendor: vendorSchema.optional(),
+  village: villageSchema.optional(),
+  images: z.array(imageSchema).optional(),
+  reviews: z.array(reviewSchema).optional(),
+});
+
+export const reviewWithRelationsSchema = reviewSchema.extend({
+  user: userSchema.optional(),
+  product: productSchema.optional(),
+  host: hostSchema.optional(),
+  village: villageSchema.optional(),
+  room: roomSchema.optional(),
+  images: z.array(imageSchema).optional(),
+});
+
+export const imageWithRelationsSchema = imageSchema.extend({
+  product: productSchema.optional(),
+  village: villageSchema.optional(),
+  room: roomSchema.optional(),
+  review: reviewSchema.optional(),
+  host: hostSchema.optional(),
+});
+
+export const bookingWithRelationsSchema = bookingSchema.extend({
+  user: userSchema.optional(),
+  room: roomSchema.optional(),
+});
+
+// Export types
+export type Admin = z.infer<typeof adminSchema>;
+export type User = z.infer<typeof userSchema>;
+export type Village = z.infer<typeof villageSchema>;
+export type Host = z.infer<typeof hostSchema>;
+export type Room = z.infer<typeof roomSchema>;
+export type Vendor = z.infer<typeof vendorSchema>;
+export type Product = z.infer<typeof productSchema>;
+export type Review = z.infer<typeof reviewSchema>;
+export type Image = z.infer<typeof imageSchema>;
+export type Booking = z.infer<typeof bookingSchema>;
+
+export type CreateAdmin = z.infer<typeof createAdminSchema>;
+export type CreateUser = z.infer<typeof createUserSchema>;
+export type CreateVillage = z.infer<typeof createVillageSchema>;
+export type CreateHost = z.infer<typeof createHostSchema>;
+export type CreateRoom = z.infer<typeof createRoomSchema>;
+export type CreateVendor = z.infer<typeof createVendorSchema>;
+export type CreateProduct = z.infer<typeof createProductSchema>;
+export type CreateReview = z.infer<typeof createReviewSchema>;
+export type CreateImage = z.infer<typeof createImageSchema>;
+export type CreateBooking = z.infer<typeof createBookingSchema>;
+
+export type UpdateAdmin = z.infer<typeof updateAdminSchema>;
+export type UpdateUser = z.infer<typeof updateUserSchema>;
+export type UpdateVillage = z.infer<typeof updateVillageSchema>;
+export type UpdateHost = z.infer<typeof updateHostSchema>;
+export type UpdateRoom = z.infer<typeof updateRoomSchema>;
+export type UpdateVendor = z.infer<typeof updateVendorSchema>;
+export type UpdateProduct = z.infer<typeof updateProductSchema>;
+export type UpdateReview = z.infer<typeof updateReviewSchema>;
+export type UpdateImage = z.infer<typeof updateImageSchema>;
+export type UpdateBooking = z.infer<typeof updateBookingSchema>;
+
+// Add missing type aliases for controllers
+export type AdminCreate = CreateAdmin;
+export type AdminUpdate = UpdateAdmin;
+export type UserCreate = CreateUser;
+export type UserUpdate = UpdateUser;
+export type VillageCreate = CreateVillage;
+export type VillageUpdate = UpdateVillage;
+export type HostCreate = CreateHost;
+export type HostUpdate = UpdateHost;
+export type RoomCreate = CreateRoom;
+export type RoomUpdate = UpdateRoom;
+export type VendorCreate = CreateVendor;
+export type VendorUpdate = UpdateVendor;
+export type ProductCreate = CreateProduct;
+export type ProductUpdate = UpdateProduct;
+export type ReviewCreate = CreateReview;
+export type ReviewUpdate = UpdateReview;
+export type ImageCreate = CreateImage;
+export type ImageUpdate = UpdateImage;
+export type BookingCreate = CreateBooking;
+export type BookingUpdate = UpdateBooking;
+
+export type UserWithRelations = z.infer<typeof userWithRelationsSchema>;
+export type VillageWithRelations = z.infer<typeof villageWithRelationsSchema>;
+export type HostWithRelations = z.infer<typeof hostWithRelationsSchema>;
+export type RoomWithRelations = z.infer<typeof roomWithRelationsSchema>;
+export type VendorWithRelations = z.infer<typeof vendorWithRelationsSchema>;
+export type ProductWithRelations = z.infer<typeof productWithRelationsSchema>;
+export type ReviewWithRelations = z.infer<typeof reviewWithRelationsSchema>;
+export type ImageWithRelations = z.infer<typeof imageWithRelationsSchema>;
+export type BookingWithRelations = z.infer<typeof bookingWithRelationsSchema>;
 

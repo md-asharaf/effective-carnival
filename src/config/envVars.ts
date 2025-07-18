@@ -44,7 +44,22 @@ const EnvConfigSchema = z.object({
   REDIS_DB: z.coerce.number({
     required_error: "REDIS_DB environment variable is required",
     invalid_type_error: "REDIS_DB must be a valid number"
-  }).int().nonnegative().default(0)
+  }).int().nonnegative().default(0),
+  REDIS_URL: z.string().optional(),
+  
+  // Razorpay configuration
+  RAZORPAY_KEY_ID: z.string({
+    required_error: "RAZORPAY_KEY_ID environment variable is required",
+    invalid_type_error: "RAZORPAY_KEY_ID must be a string"
+  }).min(1, "RAZORPAY_KEY_ID can not be empty"),
+  RAZORPAY_KEY_SECRET: z.string({
+    required_error: "RAZORPAY_KEY_SECRET environment variable is required",
+    invalid_type_error: "RAZORPAY_KEY_SECRET must be a string"
+  }).min(1, "RAZORPAY_KEY_SECRET can not be empty"),
+  RAZORPAY_WEBHOOK_SECRET: z.string({
+    required_error: "RAZORPAY_WEBHOOK_SECRET environment variable is required",
+    invalid_type_error: "RAZORPAY_WEBHOOK_SECRET must be a string"
+  }).min(1, "RAZORPAY_WEBHOOK_SECRET can not be empty")
 });
 
 // Define the config type using Zod inference
@@ -59,7 +74,11 @@ const rawConfig = {
   REDIS_HOST: process.env.REDIS_HOST,
   REDIS_PORT: process.env.REDIS_PORT,
   REDIS_DB: process.env.REDIS_DB,
+  REDIS_URL: process.env.REDIS_URL,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
+  RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+  RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+  RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET,
 };
 
 // Validate and parse configuration
@@ -91,7 +110,11 @@ export const {
   REDIS_HOST,
   REDIS_PORT,
   REDIS_DB,
-  RESEND_API_KEY
+  REDIS_URL,
+  RESEND_API_KEY,
+  RAZORPAY_KEY_ID,
+  RAZORPAY_KEY_SECRET,
+  RAZORPAY_WEBHOOK_SECRET
 } = envVars;
 
 export default envVars;

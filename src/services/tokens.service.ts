@@ -1,36 +1,56 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+import { logger } from '@/config/logger';
 
-export function generateTokens(
-    id: string,
-    jti: string,
-    secretKey: string
-): { accessToken: string; refreshToken: string } {
-    const accessToken = generateToken(id, jti, secretKey, "15m");
+interface TokenPayload {
+  id: string;
+  jti: string;
+  iat: number;
+  exp: number;
+}
 
-    const refreshToken = generateToken(id, jti, secretKey, "7d");
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
+export const generateTokens = (userId: string, jti: string, secret: string): Tokens => {
+  try {
+    const accessToken = jwt.sign(
+      { id: userId, jti },
+      secret,
+      { expiresIn: '15m' }
+    );
+
+    const refreshToken = jwt.sign(
+      { id: userId, jti },
+      secret,
+      { expiresIn: '7d' }
+    );
+
+    logger.info(`[TOKENS_SERVICE] : Tokens generated for user ${userId}`);
+    
     return {
-        accessToken,
-        refreshToken,
+      accessToken,
+      refreshToken,
     };
-}
+  } catch (error) {
+    logger.error('[TOKENS_SERVICE] : Error generating tokens:', error);
+    throw error;
+  }
+};
 
-export function verifyToken(
-    token: string,
-    secretKey: string
-): { id: string; jti: string } | null {
-    const decoded = jwt.verify(token, secretKey) as {
-        id: string;
-        jti: string;
-    };
+export const verifyToken = (token: string, secret: string): TokenPayload | null => {
+  try {
+    const decoded = jwt.verify(token, secret) as TokenPayload;
+    logger.info(`[TOKENS_SERVICE] : Token verified for user ${decoded.id}`);
     return decoded;
-}
+  } catch (error) {
+    logger.error('[TOKENS_SERVICE] : Error verifying token:', error);
+    return null;
+  }
+};
 
-export function generateToken(
-    id: string,
-    jti: string,
-    secretKey: string,
-    expiresIn: string
-): string {
-    return jwt.sign({ id, jti }, secretKey, { expiresIn: expiresIn as any });
-}
+export default {
+  generateTokens,
+  verifyToken,
+};

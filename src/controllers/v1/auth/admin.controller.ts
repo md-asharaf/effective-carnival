@@ -14,6 +14,7 @@ import adminService from "@/services/admin.service";
 import { APIError } from "@/utils/APIError";
 import { Request, Response } from "express";
 import { z } from "zod";
+import crypto from "crypto";
 
 const initiateLogin = catchAsync(async (req: Request, res: Response) => {
     const { email } = req.body as AdminLoginInterface;

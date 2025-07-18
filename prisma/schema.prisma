@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id    String @id @default(cuid())
+  email String @unique
+
+  @@map("admins")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  phone     String?   @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  bookings  Booking[]
+  hosts     Host[]
+  reviews   Review[]
+  vendors   Vendor[]
+
+  @@map("users")
+}
+
+model Village {
+  id          String    @id @default(cuid())
+  name        String
+  location    String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  hosts       Host[]
+  images      Image[]
+  products    Product[]
+  reviews     Review[]
+  rooms       Room[]
+  vendors     Vendor[]
+
+  @@map("villages")
+}
+
+model Host {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  villageId String   @map("village_id")
+  bio       String?
+  languages String?
+  rating    Decimal  @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id])
+  village   Village  @relation(fields: [villageId], references: [id])
+  images    Image[]
+  reviews   Review[]
+  rooms     Room[]
+
+  @@map("hosts")
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  hostId      String    @map("host_id")
+  villageId   String    @map("village_id")
+  name        String
+  description String?
+  price       Decimal
+  available   Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  bookings    Booking[]
+  images      Image[]
+  reviews     Review[]
+  host        Host      @relation(fields: [hostId], references: [id])
+  village     Village   @relation(fields: [villageId], references: [id])
+
+  @@map("rooms")
+}
+
+model Vendor {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  villageId String    @map("village_id")
+  name      String
+  contact   String?
+  rating    Decimal   @default(0)
+  createdAt DateTime  @default(now()) @map("created_at")
+  products  Product[]
+  user      User      @relation(fields: [userId], references: [id])
+  village   Village   @relation(fields: [villageId], references: [id])
+
+  @@map("vendors")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  vendorId    String   @map("vendor_id")
+  villageId   String   @map("village_id")
+  name        String
+  description String?
+  price       Decimal
+  rating      Decimal  @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  images      Image[]
+  vendor      Vendor   @relation(fields: [vendorId], references: [id])
+  village     Village  @relation(fields: [villageId], references: [id])
+  reviews     Review[]
+
+  @@map("products")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  productId String?  @map("product_id")
+  hostId    String?  @map("host_id")
+  villageId String?  @map("village_id")
+  roomId    String?  @map("room_id")
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now()) @map("created_at")
+  images    Image[]
+  host      Host?    @relation(fields: [hostId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
+  room      Room?    @relation(fields: [roomId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  village   Village? @relation(fields: [villageId], references: [id])
+
+  @@map("reviews")
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  productId String?  @map("product_id")
+  villageId String?  @map("village_id")
+  roomId    String?  @map("room_id")
+  hostId    String?  @map("host_id")
+  reviewId  String?  @map("review_id")
+  url       String
+  createdAt DateTime @default(now()) @map("created_at")
+  host      Host?    @relation(fields: [hostId], references: [id], map: "host_image")
+  product   Product? @relation(fields: [productId], references: [id])
+  review    Review?  @relation(fields: [reviewId], references: [id])
+  room      Room?    @relation(fields: [roomId], references: [id])
+  village   Village? @relation(fields: [villageId], references: [id])
+
+  @@map("images")
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  roomId     String   @map("room_id")
+  startDate  DateTime @map("start_date")
+  endDate    DateTime @map("end_date")
+  totalPrice Decimal  @map("total_price")
+  status     String   @default("pending")
+  createdAt  DateTime @default(now()) @map("created_at")
+  room       Room     @relation(fields: [roomId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("bookings")
+}

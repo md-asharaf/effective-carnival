@@ -1,139 +1,136 @@
-import {
-    type Admin,
-    type AdminCreate,
-    AdminCreateSchema,
-} from "@/@types/schema";
-import { db } from "@/config/database";
-import { logger } from "@/config/logger";
-import { APIError } from "@/utils/APIError";
-import { z } from "zod";
-import { eq } from "drizzle-orm";
-import { admins, users } from "@/db/schema";
+import {db as prisma} from '@/config/database';
+import { CreateAdmin, UpdateAdmin, Admin } from '@/@types/schema';
+import { logger } from '@/config/logger';
 
 class AdminService {
-    async createAdmin(adminData: AdminCreate): Promise<Admin> {
-        try {
-            const { email } = AdminCreateSchema.parse(adminData);
+  async createAdmin(data: CreateAdmin): Promise<Admin> {
+    try {
+      const admin = await prisma.admin.create({
+        data: {
+          email: data.email,
+        },
+      });
 
-            // Check if admin already exists
-            const existingAdmin = await db.query.admins.findFirst({
-                where: eq(admins.email, email),
-                columns: { id: true },
-            });
-            if (existingAdmin) {
-                throw new APIError(
-                    409,
-                    "Admin with this email already exists. Please use a different email."
-                );
-            }
-
-            // Check if user exists with the same email
-            const existingUser = await db.query.users.findFirst({
-                where: eq(users.email, email),
-                columns: { id: true },
-            });
-            if (existingUser) {
-                throw new APIError(
-                    409,
-                    "A user with this email already exists. Please use a different email"
-                );
-            }
-
-            // Create new admin
-            const [admin] = await db
-                .insert(admins)
-                .values({ email })
-                .returning();
-            if (!admin) {
-                throw new APIError(500, "Failed to create admin");
-            }
-            logger.info(
-                `[ADMIN_SERVICE] Admin created successfully with ID: ${admin.id}`
-            );
-            return admin as Admin;
-        } catch (error: any) {
-            if (error instanceof APIError) {
-                throw error;
-            }
-            if (error instanceof z.ZodError) {
-                throw new APIError(
-                    400,
-                    error.errors.map((e) => e.message).join(", ")
-                );
-            }
-            logger.error(`[ADMIN_SERVICE] Error creating admin:`, error);
-            throw new APIError(500, "Failed to create admin");
-        }
+      logger.info(`[ADMIN_SERVICE] : Admin created with ID: ${admin.id}`);
+      return admin as Admin;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error creating admin:', error);
+      throw error;
     }
+  }
 
-    async getAdminById(adminId: string): Promise<Admin | null> {
-        try {
-            const admin = await db.query.admins.findFirst({
-                where: eq(admins.id, adminId),
-            });
+  async getAdminById(id: string): Promise<Admin | null> {
+    try {
+      const admin = await prisma.admin.findUnique({
+        where: { id },
+      });
 
-            if (!admin) {
-                logger.warn(
-                    `[ADMIN_SERVICE] Admin not found with ID: ${adminId}`
-                );
-                return null;
-            }
+      if (!admin) {
+        logger.warn(`[ADMIN_SERVICE] : Admin not found with ID: ${id}`);
+        return null;
+      }
 
-            logger.info(
-                `[ADMIN_SERVICE] Admin retrieved successfully with ID: ${adminId}`
-            );
-            return admin;
-        } catch (error) {
-            logger.error(
-                `[ADMIN_SERVICE] Error getting admin by ID ${adminId}:`,
-                error
-            );
-            throw new APIError(500, "Failed to retrieve admin");
-        }
+      logger.info(`[ADMIN_SERVICE] : Admin retrieved with ID: ${id}`);
+      return admin as Admin;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error retrieving admin:', error);
+      throw error;
     }
+  }
 
-    async getAdminByEmail(email: string): Promise<Admin | null> {
-        try {
-            const admin = await db.query.admins.findFirst({
-                where: eq(admins.email, email),
-            });
+  async getAdminByEmail(email: string): Promise<Admin | null> {
+    try {
+      const admin = await prisma.admin.findUnique({
+        where: { email },
+      });
 
-            if (!admin) {
-                logger.warn(
-                    `[ADMIN_SERVICE] Admin not found with email: ${email}`
-                );
-                return null;
-            }
+      if (!admin) {
+        logger.warn(`[ADMIN_SERVICE] : Admin not found with email: ${email}`);
+        return null;
+      }
 
-            logger.info(
-                `[ADMIN_SERVICE] Admin retrieved successfully with email: ${email}`
-            );
-            return admin;
-        } catch (error) {
-            logger.error(
-                `[ADMIN_SERVICE] Error getting admin by email ${email}:`,
-                error
-            );
-            throw new APIError(500, "Failed to retrieve admin");
-        }
+      logger.info(`[ADMIN_SERVICE] : Admin retrieved with email: ${email}`);
+      return admin as Admin;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error retrieving admin by email:', error);
+      throw error;
     }
+  }
 
-    async adminExists(email: string): Promise<boolean> {
-        try {
-            logger.info(`[ADMIN_SERVICE] Checking if admin exists with email: ${email}`);
-            const admin = await db.query.admins.findFirst({
-                where: eq(admins.email, email),
-                columns: { id: true },
-            });
-            return !!admin;
-        } catch (error) {
-            logger.error(
-                `[ADMIN_SERVICE] Error checking if admin exists with email ${email}:`,
-                error
-            );
-            throw new APIError(500, "Failed to check admin existence");
-        }
+  async adminExists(email: string): Promise<boolean> {
+    try {
+      const admin = await prisma.admin.findUnique({
+        where: { email },
+      });
+
+      const exists = !!admin;
+      logger.info(`[ADMIN_SERVICE] : Admin exists check for ${email}: ${exists}`);
+      return exists;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error checking admin existence:', error);
+      throw error;
     }
+  }
+
+  async getAllAdmins(page: number = 1, limit: number = 10): Promise<{ admins: Admin[]; total: number; page: number; limit: number; totalPages: number }> {
+    try {
+      const skip = (page - 1) * limit;
+
+      const [admins, total] = await Promise.all([
+        prisma.admin.findMany({
+          skip,
+          take: limit,
+          orderBy: { id: 'asc' },
+        }),
+        prisma.admin.count(),
+      ]);
+
+      const totalPages = Math.ceil(total / limit);
+
+      logger.info(`[ADMIN_SERVICE] : Retrieved ${admins.length} admins (page ${page}/${totalPages})`);
+      return {
+        admins: admins as Admin[],
+        total,
+        page,
+        limit,
+        totalPages,
+      };
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error retrieving admins:', error);
+      throw error;
+    }
+  }
+
+  async updateAdmin(id: string, data: UpdateAdmin): Promise<Admin | null> {
+    try {
+      const admin = await prisma.admin.update({
+        where: { id },
+        data: {
+          email: data.email,
+        },
+      });
+
+      logger.info(`[ADMIN_SERVICE] : Admin updated with ID: ${id}`);
+      return admin as Admin;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error updating admin:', error);
+      throw error;
+    }
+  }
+
+  async deleteAdmin(id: string): Promise<boolean> {
+    try {
+      await prisma.admin.delete({
+        where: { id },
+      });
+
+      logger.info(`[ADMIN_SERVICE] : Admin deleted with ID: ${id}`);
+      return true;
+    } catch (error) {
+      logger.error('[ADMIN_SERVICE] : Error deleting admin:', error);
+      throw error;
+    }
+  }
 }
 
 export default new AdminService();

@@ -24,12 +24,12 @@
     "incremental": true,
     "sourceMap": true,
     "baseUrl": "./",
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "typeRoots": ["prisma/node_modules/@types", "./src/@types"],
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node", "express"]
+
   },
   "include": ["src", "src/types"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["prisma/node_modules", "dist"]
 }

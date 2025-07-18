@@ -1,237 +1,223 @@
-import { db } from "@/config/database";
-import { logger } from "@/config/logger";
-import { APIError } from "@/utils/APIError";
-import {
-    ImageCreateSchema,
-    ImageUpdateSchema,
-    type ImageCreate,
-    type ImageUpdate,
-    type Image,
-    type ImageWithRelations,
-} from "@/@types/schema";
-import { and, eq, inArray } from "drizzle-orm";
-import { images } from "@/db/schema";
+import {db as prisma} from '@/config/database';
+import { CreateImage, UpdateImage, Image } from '@/@types/schema';
+import { logger } from '@/config/logger';
 
 class ImageService {
-    /**
-     * Create a new productImage
-     */
-    async createImage(productImagesData: ImageCreate): Promise<Image> {
-        try {
-            // Validate input data
-            const validatedData = ImageCreateSchema.parse(productImagesData);
+  async createImage(data: CreateImage): Promise<Image> {
+    try {
+      const image = await prisma.image.create({
+        data: {
+          url: data.url,
+          productId: data.productId,
+          villageId: data.villageId,
+          roomId: data.roomId,
+          hostId: data.hostId,
+          reviewId: data.reviewId,
+        },
+      });
 
-            // Check if image with productId already exists
-            const existingImage = await db.query.images.findFirst({
-                where: and(eq(images.productId, validatedData.productId || ""), eq(images.categoryId, validatedData.categoryId || ""), eq(images.subCategoryId, validatedData.subCategoryId || "")),
-            });
-
-            if (existingImage) {
-                throw new APIError(
-                    409,
-                    "Image with this productId or categoryId or subCategoryId already exists"
-                );
-            }
-
-            // Create the image
-            const [createdImage] = await db
-                .insert(images)
-                .values(validatedData)
-                .returning();
-
-            logger.info(
-                `[IMAGE_SERVICE] Image created successfully with ID: ${createdImage.id}`
-            );
-            return createdImage;
-        } catch (error) {
-            if (error instanceof APIError) {
-                throw error;
-            }
-            logger.error("[IMAGE_SERVICE] Error creating productImage:", error);
-            throw new APIError(500, "Failed to create productImage");
-        }
+      logger.info(`[IMAGE_SERVICE] : Image created with ID: ${image.id}`);
+      return image as Image;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error creating image:', error);
+      throw error;
     }
+  }
 
-    /**
-     * Get productImages by ID
-     */
-    async getImageById(
-        id: string,
-        includeRelations: boolean = false
-    ): Promise<Image | ImageWithRelations | null> {
-        try {
-            const image = await db.query.images.findFirst({
-                where: eq(images.id, id),
-                with: includeRelations
-                    ? {
-                        product: true,
-                    }
-                    : undefined,
-            });
+  async getImageById(id: string): Promise<Image | null> {
+    try {
+      const image = await prisma.image.findUnique({
+        where: { id },
+      });
 
-            logger.info(
-                `[IMAGE_SERVICE] Image retrieved successfully with ID: ${id}`
-            );
-            return image || null;
-        } catch (error) {
-            logger.error(
-                `[IMAGE_SERVICE] Error getting productImage by ID ${id}:`,
-                error
-            );
-            throw new APIError(500, "Failed to retrieve productImage");
-        }
+      if (!image) {
+        logger.warn(`[IMAGE_SERVICE] : Image not found with ID: ${id}`);
+        return null;
+      }
+
+      logger.info(`[IMAGE_SERVICE] : Image retrieved with ID: ${id}`);
+      return image as Image;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving image:', error);
+      throw error;
     }
+  }
 
-    /**
-     * Update productImages by ID
-     */
-    async updateImage(
-        id: string,
-        productImagesData: ImageUpdate
-    ): Promise<Image> {
-        try {
-            // Validate input data
-            const validatedData = ImageUpdateSchema.parse(productImagesData);
+  async getImagesByProductId(productId: string): Promise<Image[]> {
+    try {
+      const images = await prisma.image.findMany({
+        where: { productId },
+      });
 
-            // Check if image exists
-            const existingImage = await db.query.images.findFirst({
-                where: eq(images.id, id),
-                columns: {},
-            });
-
-            if (!existingImage) {
-                throw new APIError(404, "Image not found");
-            }
-
-            // Update the image
-            const [updatedImage] = await db
-                .update(images)
-                .set(validatedData)
-                .where(eq(images.id, id))
-                .returning();
-
-            logger.info(
-                `[IMAGE_SERVICE] Image updated successfully with ID: ${id}`
-            );
-            return updatedImage;
-        } catch (error) {
-            if (error instanceof APIError) {
-                throw error;
-            }
-            logger.error(
-                `[IMAGE_SERVICE] Error updating productImage ${id}:`,
-                error
-            );
-            throw new APIError(500, "Failed to update productImage");
-        }
+      logger.info(`[IMAGE_SERVICE] : Retrieved ${images.length} images for product ID: ${productId}`);
+      return images as Image[];
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving images by product ID:', error);
+      throw error;
     }
+  }
 
-    /**
-     * Delete productImages by ID
-     */
-    async deleteImage(
-        id: string
-    ): Promise<{ success: boolean; message: string }> {
-        try {
-            // Check if image exists and get its product relation
-            const existingImage = await db.query.images.findFirst({
-                where: eq(images.id, id),
-                columns: {},
-            });
+  async getImagesByVillageId(villageId: string): Promise<Image[]> {
+    try {
+      const images = await prisma.image.findMany({
+        where: { villageId },
+      });
 
-            if (!existingImage) {
-                throw new APIError(404, "Image not found");
-            }
-
-            // Delete the image
-            await db.delete(images).where(eq(images.id, id));
-
-            logger.info(
-                `[IMAGE_SERVICE] Image deleted successfully with ID: ${id}`
-            );
-            return {
-                success: true,
-                message: "Image deleted successfully",
-            };
-        } catch (error) {
-            if (error instanceof APIError) {
-                throw error;
-            }
-            logger.error(
-                `[IMAGE_SERVICE] Error deleting productImage ${id}:`,
-                error
-            );
-            throw new APIError(500, "Failed to delete productImage");
-        }
+      logger.info(`[IMAGE_SERVICE] : Retrieved ${images.length} images for village ID: ${villageId}`);
+      return images as Image[];
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving images by village ID:', error);
+      throw error;
     }
+  }
 
-    /**
-     * Soft delete productImages by updating a status field
-     */
-    async softDeleteImage(
-        id: string
-    ): Promise<{ success: boolean; message: string }> {
-        try {
-            // Check if image exists
-            const existingImage = await db.query.images.findFirst({
-                where: eq(images.id, id),
-            });
+  async getImagesByRoomId(roomId: string): Promise<Image[]> {
+    try {
+      const images = await prisma.image.findMany({
+        where: { roomId },
+      });
 
-            if (!existingImage) {
-                throw new APIError(404, "Image not found");
-            }
-
-            await db
-                .update(images)
-                .set({
-                    isActive: false,
-                    deletedAt: new Date(),
-                })
-                .where(eq(images.id, id));
-
-            logger.info(
-                `[IMAGE_SERVICE] Image soft deleted successfully with ID: ${id}`
-            );
-            return {
-                success: true,
-                message: "Image deactivated successfully",
-            };
-        } catch (error) {
-            if (error instanceof APIError) {
-                throw error;
-            }
-            logger.error(
-                `[IMAGE_SERVICE] Error soft deleting productImage ${id}:`,
-                error
-            );
-            throw new APIError(500, "Failed to deactivate productImage");
-        }
+      logger.info(`[IMAGE_SERVICE] : Retrieved ${images.length} images for room ID: ${roomId}`);
+      return images as Image[];
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving images by room ID:', error);
+      throw error;
     }
+  }
 
-    /**
-     * Get productImages by multiple IDs
-     */
-    async getImagesByIds(ids: string[]): Promise<Image[]> {
-        try {
-            if (!ids.length) return [];
+  async getImagesByHostId(hostId: string): Promise<Image[]> {
+    try {
+      const images = await prisma.image.findMany({
+        where: { hostId },
+      });
 
-            const productImages = await db
-                .select()
-                .from(images)
-                .where(inArray(images.id, ids));
-
-            logger.info(
-                `[IMAGE_SERVICE] Retrieved ${productImages.length} productImages by IDs`
-            );
-            return productImages;
-        } catch (error) {
-            logger.error(
-                "[IMAGE_SERVICE] Error getting productImages by IDs:",
-                error
-            );
-            throw new APIError(500, "Failed to retrieve productImages");
-        }
+      logger.info(`[IMAGE_SERVICE] : Retrieved ${images.length} images for host ID: ${hostId}`);
+      return images as Image[];
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving images by host ID:', error);
+      throw error;
     }
+  }
+
+  async getImagesByReviewId(reviewId: string): Promise<Image[]> {
+    try {
+      const images = await prisma.image.findMany({
+        where: { reviewId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Retrieved ${images.length} images for review ID: ${reviewId}`);
+      return images as Image[];
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error retrieving images by review ID:', error);
+      throw error;
+    }
+  }
+
+  async updateImage(id: string, data: UpdateImage): Promise<Image | null> {
+    try {
+      const image = await prisma.image.update({
+        where: { id },
+        data: {
+          url: data.url,
+          productId: data.productId,
+          villageId: data.villageId,
+          roomId: data.roomId,
+          hostId: data.hostId,
+          reviewId: data.reviewId,
+        },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Image updated with ID: ${id}`);
+      return image as Image;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error updating image:', error);
+      throw error;
+    }
+  }
+
+  async deleteImage(id: string): Promise<boolean> {
+    try {
+      await prisma.image.delete({
+        where: { id },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Image deleted with ID: ${id}`);
+      return true;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting image:', error);
+      throw error;
+    }
+  }
+
+  async deleteImagesByProductId(productId: string): Promise<number> {
+    try {
+      const result = await prisma.image.deleteMany({
+        where: { productId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Deleted ${result.count} images for product ID: ${productId}`);
+      return result.count;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting images by product ID:', error);
+      throw error;
+    }
+  }
+
+  async deleteImagesByVillageId(villageId: string): Promise<number> {
+    try {
+      const result = await prisma.image.deleteMany({
+        where: { villageId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Deleted ${result.count} images for village ID: ${villageId}`);
+      return result.count;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting images by village ID:', error);
+      throw error;
+    }
+  }
+
+  async deleteImagesByRoomId(roomId: string): Promise<number> {
+    try {
+      const result = await prisma.image.deleteMany({
+        where: { roomId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Deleted ${result.count} images for room ID: ${roomId}`);
+      return result.count;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting images by room ID:', error);
+      throw error;
+    }
+  }
+
+  async deleteImagesByHostId(hostId: string): Promise<number> {
+    try {
+      const result = await prisma.image.deleteMany({
+        where: { hostId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Deleted ${result.count} images for host ID: ${hostId}`);
+      return result.count;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting images by host ID:', error);
+      throw error;
+    }
+  }
+
+  async deleteImagesByReviewId(reviewId: string): Promise<number> {
+    try {
+      const result = await prisma.image.deleteMany({
+        where: { reviewId },
+      });
+
+      logger.info(`[IMAGE_SERVICE] : Deleted ${result.count} images for review ID: ${reviewId}`);
+      return result.count;
+    } catch (error) {
+      logger.error('[IMAGE_SERVICE] : Error deleting images by review ID:', error);
+      throw error;
+    }
+  }
 }
 
 export default new ImageService();

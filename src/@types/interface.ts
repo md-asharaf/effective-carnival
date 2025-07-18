@@ -1,10 +1,20 @@
 import { z } from 'zod';
-import { StoreCreateSchema } from './schema';
-import { UserUpdateSchema } from "./schema";
+import { Admin, User, updateUserSchema } from "./schema";
+
+// Extend Express Request interface to include user property
+declare global {
+    namespace Express {
+        interface Request {
+            user?: Omit<User, "password">,
+            admin?: Admin
+        }
+    }
+}
 
 const InterfaceSchema = z.object({
 	email: z.string().email(),
 	name: z.string().min(1, "Name is required"),
+	phone: z.string().optional(),
 });
 export type registerInterface = z.infer<typeof InterfaceSchema>;
 
@@ -20,16 +30,16 @@ export const EmailOptionsSchema = z.object({
 	text: z.string().optional(),
 	html: z.string().optional(),
 });
+
 export const sendContactForm = z.object({
 	name: z.string(),
 	email: z.string(),
 	subject: z.string(),
 	message: z.string(),
 });
+
 export type SendContactFormInterface = z.infer<typeof sendContactForm>;
 export type EmailInterface = z.infer<typeof EmailOptionsSchema>;
-
-
 
 export const RegisterSchema = z.object({
     email: z.string().email(),
@@ -52,13 +62,6 @@ export const LoginSchema = z.object({
 });
 export type LoginInterface = z.infer<typeof LoginSchema>;
 
-export const EmailOptionsSchema = z.object({
-    to: z.string().email(),
-    subject: z.string(),
-    text: z.string().optional(),
-    html: z.string().optional(),
-});
-
 export const SendContactForm = z.object({
     name: z.string(),
     email: z.string(),
@@ -66,9 +69,7 @@ export const SendContactForm = z.object({
     message: z.string(),
 });
 
-export const UpdateProfileSchema = UserUpdateSchema.omit({
-    password: true,
-});
+export const UpdateProfileSchema = updateUserSchema;
 export const ResetPasswordSchema = z.object({
     newPassword: z
         .string()
@@ -96,7 +97,6 @@ export const CreateOrderSchema = z.object({
 });
 
 export type CreateOrderInterface = z.infer<typeof CreateOrderSchema>;
-
 
 // Query Schema for common query parameters
 export const QuerySchema = z.object({
@@ -148,6 +148,7 @@ export const QuerySchema = z.object({
         .pipe(z.number().positive())
         .optional(),
 });
+
 export const VerifyLoginSchema = VerifyRegistrationSchema;
 export const AdminLoginSchema = LoginSchema.omit({ password: true });
 export const ForgotPasswordSchema = AdminLoginSchema;
@@ -158,8 +159,6 @@ export type QueryInterface = z.infer<typeof QuerySchema>;
 export type VerifyLoginInterface = z.infer<typeof VerifyLoginSchema>;
 export type AdminRegisterInterface = z.infer<typeof AdminRegisterSchema>;
 export type AdminLoginInterface = z.infer<typeof AdminLoginSchema>;
-export type SendContactFormInterface = z.infer<typeof SendContactForm>;
-export type EmailInterface = z.infer<typeof EmailOptionsSchema>;
 export type UpdateProfileInterface = z.infer<typeof UpdateProfileSchema>;
 export type RefreshTokenInterface = z.infer<typeof RefreshTokenSchema>;
 export type ChangePasswordInterface = z.infer<typeof ChangePasswordSchema>;
